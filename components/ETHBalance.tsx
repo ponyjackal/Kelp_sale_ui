@@ -7,7 +7,11 @@ const ETHBalance = () => {
   const { account } = useWeb3React<Web3Provider>();
   const { data } = useETHBalance(account);
 
-  return <p>Balance: Ξ{parseBalance(data ?? 0)}</p>;
+  return (
+    <p>
+      BNB Balance: <strong>{parseBalance(data ?? 0)}</strong>
+    </p>
+  );
 };
 
 export default ETHBalance;

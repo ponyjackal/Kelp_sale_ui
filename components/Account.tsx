@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
-import { useEffect, useState } from "react";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import { injected } from "../connectors";
 import useENSName from "../hooks/useENSName";
 import useMetaMaskOnboarding from "../hooks/useMetaMaskOnboarding";
@@ -11,7 +13,7 @@ type AccountProps = {
 };
 
 const Account = ({ triedToEagerConnect }: AccountProps) => {
-  const { active, error, activate, chainId, account, setError } =
+  const { active, error, activate, deactivate, chainId, account, setError } =
     useWeb3React();
 
   const {
@@ -69,15 +71,12 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
   }
 
   return (
-    <a
-      {...{
-        href: formatEtherscanLink("Account", [chainId, account]),
-        target: "_blank",
-        rel: "noopener noreferrer",
-      }}
+    <DropdownButton
+      id="dropdown-basic-button"
+      title={ENSName || `${shortenHex(account, 4)}`}
     >
-      {ENSName || `${shortenHex(account, 4)}`}
-    </a>
+      <Dropdown.Item onClick={deactivate}>Disconnect</Dropdown.Item>
+    </DropdownButton>
   );
 };
 
