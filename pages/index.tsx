@@ -3,7 +3,7 @@ import Head from "next/head";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
 import TotalRaised from "../components/TotalRaised";
-import BNBBalance from "../components/BNBBalance";
+import Button from "../components/Button";
 
 function Home() {
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
@@ -29,7 +29,14 @@ function Home() {
 
         <TotalRaised />
 
-        <BNBBalance />
+        <div className="flex justify-center items-center">
+          <Button
+            className="font-bold text-2xl"
+            onClick={() => console.log("Buy Kelp")}
+          >
+            Buy Kelp
+          </Button>
+        </div>
       </main>
     </div>
   );
