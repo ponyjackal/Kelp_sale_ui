@@ -1,6 +1,20 @@
 import { ProgressBar } from "react-bootstrap";
+import useWeiRaised from "../hooks/useWeiRaised";
+import { parseBalance } from "../util";
 
 const TotalRaised = () => {
+  const { data, error, isLoading } = useWeiRaised();
+
+  if (error) {
+    return "something went wrong";
+  }
+
+  if (isLoading) {
+    return "loading";
+  }
+
+  console.log("Data", data);
+
   return (
     <div className="text-left mt-10">
       <p className="text-gray-1 text-sm sm:text-lg mb-1">TOTAL RAISED</p>

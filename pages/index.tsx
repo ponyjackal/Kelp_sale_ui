@@ -6,9 +6,6 @@ import TotalRaised from "../components/TotalRaised";
 import Button from "../components/Button";
 
 function Home() {
-  const [confirmPurchaseModal, setConfirmPurchaseModal] =
-    useState<boolean>(false);
-
   return (
     <div>
       <Head>
