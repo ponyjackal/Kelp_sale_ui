@@ -8,6 +8,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #f1f1f0;
 }
 
 a {
@@ -17,4 +18,79 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.bg-color {
+  background-color: #46d6a2;
+}
+
+.bg_secondary {
+  background-color: "#F1F1F0" !important;
+}
+
+.FFF {
+  color: #fff;
+}
+
+.text_color_primery {
+  color: #46d6a2;
+}
+
+.header_main .form-select {
+  background-color: #46d6a2;
+  background-image: url("/arrow.png");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px 12px;
+}
+
+.header_main .form-select option {
+  background-color: #46d6a2;
+}
+.selector p {
+  color: #cdcece;
+}
+
+.selector p:hover {
+  color: #fff;
+  background-color: #46d6a2;
+  /* border-radius: 1rem; */
+}
+
+.header_main .form-select:focus {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.header_main .select_main {
+  background-color: #fff;
+  /* right: 15.6rem; */
+}
+
+.border_right {
+  border-right: 1px solid #000000;
+}
+
+/* HOME  =============== */
+
+.home_main .progress {
+  height: 10px;
+}
+.home_main .progress-bar {
+  background-color: #46d6a2 !important;
+  position: absolute;
+  top: -5px;
+  height: 19px;
+  border-radius: 20px;
+}
+
+.home_main .progress {
+  --bs-progress-bg: #d9d9d9 !important;
+}
+
+/* confirm purchase ================== */
+
+.confirm_purchase_main .modal-header {
+  padding: 16px 16px 0px 16px;
+  border-bottom: none;
 }

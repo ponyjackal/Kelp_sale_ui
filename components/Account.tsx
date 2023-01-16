@@ -1,83 +1,39 @@
-import { useEffect, useState } from "react";
-import { useWeb3React } from "@web3-react/core";
-import { UserRejectedRequestError } from "@web3-react/injected-connector";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import { injected } from "../connectors";
-import useENSName from "../hooks/useENSName";
-import useMetaMaskOnboarding from "../hooks/useMetaMaskOnboarding";
-import { formatEtherscanLink, shortenHex } from "../util";
+import { useState } from "react";
+import { useWeb3Modal } from "@web3modal/react";
+import { useAccount, useEnsName } from "wagmi";
+import Button from "./Button";
+import { shortenHex } from "../util";
 
-type AccountProps = {
-  triedToEagerConnect: boolean;
-};
+export default function HomePage() {
+  const [loading, setLoading] = useState(false);
+  const { open, close } = useWeb3Modal();
+  const { address, isConnected } = useAccount();
 
-const Account = ({ triedToEagerConnect }: AccountProps) => {
-  const { active, error, activate, deactivate, chainId, account, setError } =
-    useWeb3React();
+  const { data, isError, isLoading } = useEnsName();
 
-  const {
-    isMetaMaskInstalled,
-    isWeb3Available,
-    startOnboarding,
-    stopOnboarding,
-  } = useMetaMaskOnboarding();
+  const onOpen = async () => {
+    setLoading(true);
+    await open();
+    setLoading(false);
+  };
 
-  // manage connecting state for injected connector
-  const [connecting, setConnecting] = useState(false);
-  useEffect(() => {
-    if (active || error) {
-      setConnecting(false);
-      stopOnboarding();
-    }
-  }, [active, error, stopOnboarding]);
-
-  const ENSName = useENSName(account);
-
-  if (error) {
-    return null;
-  }
-
-  if (!triedToEagerConnect) {
-    return null;
-  }
-
-  if (typeof account !== "string") {
-    return (
-      <div>
-        {isWeb3Available ? (
-          <button
-            disabled={connecting}
-            onClick={() => {
-              setConnecting(true);
-
-              activate(injected, undefined, true).catch((error) => {
-                // ignore the error if it's a user rejected request
-                if (error instanceof UserRejectedRequestError) {
-                  setConnecting(false);
-                } else {
-                  setError(error);
-                }
-              });
-            }}
-          >
-            {isMetaMaskInstalled ? "Connect to MetaMask" : "Connect to Wallet"}
-          </button>
-        ) : (
-          <button onClick={startOnboarding}>Install Metamask</button>
-        )}
-      </div>
-    );
-  }
+  const onClose = async () => {
+    setLoading(true);
+    await close();
+    setLoading(false);
+  };
 
   return (
-    <DropdownButton
-      id="dropdown-basic-button"
-      title={ENSName || `${shortenHex(account, 4)}`}
-    >
-      <Dropdown.Item onClick={deactivate}>Disconnect</Dropdown.Item>
-    </DropdownButton>
+    <>
+      {isConnected ? (
+        <Button variant="secondary" onClick={onClose} disabled={loading}>
+          {data || `${shortenHex(address, 4)}`}
+        </Button>
+      ) : (
+        <Button variant="primary" onClick={onOpen} disabled={loading}>
+          {loading ? "Loading..." : "Connect Wallet"}
+        </Button>
+      )}
+    </>
   );
-};
-
-export default Account;
+}

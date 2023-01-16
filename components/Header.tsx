@@ -1,39 +1,35 @@
 import { useState } from "react";
-import { useWeb3React } from "@web3-react/core";
 import Link from "next/link";
 import Image from "next/image";
-import useEagerConnect from "../hooks/useEagerConnect";
 import Account from "./Account";
+import { useAccount } from "wagmi";
 import ETHBalance from "./ETHBalance";
 import TokenBalance from "./TokenBalance";
 
+type Address = `0x${string}`;
+
+const tokenAddress = process.env.KELP_TOKEN_ADDRESS as Address;
+
 const Header = () => {
-  const { account, library } = useWeb3React();
-
-  const triedToEagerConnect = useEagerConnect();
-
-  const isConnected = typeof account === "string" && !!library;
+  const { address, isConnected } = useAccount();
 
   return (
     <header className="px-8 py-4">
-      <nav className="flex justify-between">
+      <nav className="flex justify-between items-center">
         <Link href="/" passHref>
           <Image src={"/kelp.png"} width={82} height={40} alt="logo" />
         </Link>
 
-        <section className="flex">
+        <section className="flex items-center">
           {isConnected && (
             <div className="grid grid-cols-2 gap-4 mr-8">
               <ETHBalance />
 
-              <TokenBalance
-                tokenAddress={process.env.KELP_TOKEN_ADDRESS}
-                symbol="KELP"
-              />
+              <TokenBalance tokenAddress={tokenAddress} />
             </div>
           )}
 
-          <Account triedToEagerConnect={triedToEagerConnect} />
+          <Account />
         </section>
       </nav>
     </header>

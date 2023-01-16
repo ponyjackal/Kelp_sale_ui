@@ -18,10 +18,14 @@ module.exports = {
       "gray-dark": "#273444",
       gray: "#8492a6",
       "gray-light": "#d3dce6",
+      primary: "#46d6a2",
+      "gray-1": "#cdcece",
+      white: "#ffffff",
     },
     fontFamily: {
       sans: ["Graphik", "sans-serif"],
       serif: ["Merriweather", "serif"],
+      helvetica: ["Helvetica Neue", "sans-serif"],
     },
     screens: {
       xxxs: "320px",

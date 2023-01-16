@@ -1,20 +1,25 @@
-import type { Web3Provider } from "@ethersproject/providers";
-import { useWeb3React } from "@web3-react/core";
-import useTokenBalance from "../hooks/useTokenBalance";
+import { useAccount, useBalance } from "wagmi";
 import { parseBalance } from "../util";
 
 type TokenBalanceProps = {
-  tokenAddress: string;
-  symbol: string;
+  tokenAddress: `0x${string}`;
 };
 
-const TokenBalance = ({ tokenAddress, symbol }: TokenBalanceProps) => {
-  const { account } = useWeb3React<Web3Provider>();
-  const { data } = useTokenBalance(account, tokenAddress);
+const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
+  const { address, isConnected } = useAccount();
+  const { data, isLoading, isError } = useBalance({
+    address,
+    token: "0x048AB7bb99c8a57F3eE0FbcCF196A2b37E5Be3D7",
+    chainId: 56,
+  });
+
+  if (isLoading) return <div>…</div>;
+  if (isError) return <div>error</div>;
 
   return (
-    <p>
-      {`${symbol} Balance`}: <strong>{parseBalance(data ?? 0)}</strong>
+    <p className="text-gray-dark">
+      {`${data?.symbol} Balance`}:{" "}
+      <strong>{parseBalance(data?.value ?? 0)}</strong>
     </p>
   );
 };
