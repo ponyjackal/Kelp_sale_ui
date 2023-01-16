@@ -10,6 +10,7 @@ import TokenBalance from "../components/TokenBalance";
 import useEagerConnect from "../hooks/useEagerConnect";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
+import TotalRaised from "../components/TotalRaised";
 
 function Home() {
   const { account, library } = useWeb3React();
@@ -31,10 +32,15 @@ function Home() {
       <Header />
 
       <main className="px-24 py-16">
-        <h1 className="text-gray-1 text-left font-bold leading-6 xs:text-2xl xxs:text-2xl xxxs:text-2xl md:text-3xl lg:text-3xl">
-          PRIVATE SALE
-        </h1>
+        <section>
+          <h1 className="text-gray-1 text-left font-bold leading-6 xs:text-2xl xxs:text-2xl xxxs:text-2xl md:text-3xl lg:text-3xl">
+            PRIVATE SALE
+          </h1>
+        </section>
+
         <Countdown date={"2023-01-31T14:48:00.000+09:00"} />
+
+        <TotalRaised />
       </main>
     </div>
   );
