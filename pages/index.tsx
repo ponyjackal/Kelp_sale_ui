@@ -1,26 +1,13 @@
-import { useState, FunctionComponent } from "react";
-import { useWeb3React } from "@web3-react/core";
-import { Container, ProgressBar } from "react-bootstrap";
+import { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
-import Image from "next/image";
-import Account from "../components/Account";
-import ETHBalance from "../components/ETHBalance";
-import TokenBalance from "../components/TokenBalance";
-import useEagerConnect from "../hooks/useEagerConnect";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
 import TotalRaised from "../components/TotalRaised";
+import BNBBalance from "../components/BNBBalance";
 
 function Home() {
-  const { account, library } = useWeb3React();
-
-  const triedToEagerConnect = useEagerConnect();
-
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
     useState<boolean>(false);
-
-  const isConnected = typeof account === "string" && !!library;
 
   return (
     <div>
@@ -41,6 +28,8 @@ function Home() {
         <Countdown date={"2023-01-31T14:48:00.000+09:00"} />
 
         <TotalRaised />
+
+        <BNBBalance />
       </main>
     </div>
   );
