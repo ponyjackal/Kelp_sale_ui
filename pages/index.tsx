@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Head from "next/head";
+import { useAccount } from "wagmi";
 import { BigNumber, utils } from "ethers";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
@@ -13,6 +14,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const kelpPrice = "0.001";
 
 function Home() {
+  const { address, isConnected } = useAccount();
+
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
     useState<boolean>(false);
 
@@ -21,13 +24,26 @@ function Home() {
 
   const { data: bnbPrice } = useBNBPrice();
 
+  const bnbPriceString = bnbPrice
+    ? utils.formatEther(bnbPrice as BigNumber).slice(0, 6)
+    : "0.0";
+
+  const bnbAmount = useMemo(() => {
+    if (!bnbPrice || !amount) {
+      return "0.0";
+    }
+
+    return utils.formatEther(
+      utils
+        .parseEther(amount)
+        .mul(utils.parseEther(kelpPrice))
+        .div(bnbPrice as BigNumber)
+    );
+  }, [bnbPrice, amount]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
     setAmount(e.target.value);
-  };
-
-  const handleConfirmBuy = () => {
-    console.log("kelp amount", utils.formatEther(utils.parseEther(amount)));
   };
 
   const handleBuy = () => {
@@ -36,8 +52,12 @@ function Home() {
       return;
     }
 
+    if (!isConnected || !address) {
+      setError("Please connect your wallet");
+      return;
+    }
+
     setConfirmPurchaseModal(true);
-    console.log("kelp amount", utils.formatEther(utils.parseEther(amount)));
   };
 
   return (
@@ -65,7 +85,7 @@ function Home() {
             Kelp Price: ${kelpPrice}
           </h2>
           <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl ml-4">
-            BNB Price: ${utils.formatEther(bnbPrice as BigNumber).slice(0, 6)}
+            BNB Price: ${bnbPriceString}
           </h2>
         </div>
 
@@ -82,13 +102,7 @@ function Home() {
           <ConfirmPurchase
             show={confirmPurchaseModal}
             onHide={() => setConfirmPurchaseModal(false)}
-            onConfirm={handleConfirmBuy}
-            bnbAmount={utils.formatEther(
-              utils
-                .parseEther(amount)
-                .mul(utils.parseEther(kelpPrice))
-                .div(bnbPrice as BigNumber)
-            )}
+            bnbAmount={bnbAmount}
             amount={amount}
             kelpPrice={kelpPrice}
           />

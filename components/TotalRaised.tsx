@@ -1,29 +1,26 @@
 import { useMemo } from "react";
 import { ProgressBar } from "react-bootstrap";
 import { utils, BigNumber } from "ethers";
-import useBNBPrice from "../hooks/useBNBPrice";
 import useWeiRaised from "../hooks/useWeiRaised";
 
 const TotalRaised = () => {
-  const { data: bnbPriceRaw } = useBNBPrice();
   const { data: totalWeiRaisedRaw } = useWeiRaised();
 
   const totalRaised = useMemo(() => {
-    if (!bnbPriceRaw || !totalWeiRaisedRaw) {
+    if (!totalWeiRaisedRaw) {
       return 0;
     }
 
-    const bnbPrice = bnbPriceRaw as BigNumber;
-    const totalWeiRaised = totalWeiRaisedRaw as BigNumber;
+    const totalWeiRaised = utils.formatEther(totalWeiRaisedRaw as BigNumber);
 
-    return utils.formatEther(totalWeiRaised.mul(bnbPrice));
-  }, [totalWeiRaisedRaw, bnbPriceRaw]);
+    return totalWeiRaised.slice(0, totalWeiRaised.indexOf(".") + 6);
+  }, [totalWeiRaisedRaw]);
 
   return (
     <div className="text-left mt-10">
       <p className="text-gray-1 text-sm sm:text-lg mb-1">TOTAL RAISED</p>
       <p className="text-green-1 font-bold text-lg sm:text-2xl mb-2.5 md:mb-6">
-        $ {totalRaised ?? 0}
+        {totalRaised ?? 0} BNB
       </p>
       <div className="relative progress-container">
         <ProgressBar now={10} />
