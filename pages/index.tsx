@@ -1,21 +1,28 @@
 import { useState } from "react";
 import Head from "next/head";
-import { utils } from "ethers";
+import { BigNumber, utils } from "ethers";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
 import TotalRaised from "../components/TotalRaised";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import ConfirmPurchase from "../components/ConfirmPurchase";
+import useBNBPrice from "../hooks/useBNBPrice";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+const kelpPrice = "0.001";
 
 function Home() {
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
     useState<boolean>(false);
 
   const [amount, setAmount] = useState<string>("");
+  const [error, setError] = useState<string>("");
+
+  const { data: bnbPrice } = useBNBPrice();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError("");
     setAmount(e.target.value);
   };
 
@@ -24,7 +31,10 @@ function Home() {
   };
 
   const handleBuy = () => {
-    if (!amount) return;
+    if (!amount) {
+      setError("Amount is required");
+      return;
+    }
 
     setConfirmPurchaseModal(true);
     console.log("kelp amount", utils.formatEther(utils.parseEther(amount)));
@@ -50,18 +60,37 @@ function Home() {
 
         <TotalRaised />
 
-        <div className="flex justify-center items-center mt-24">
-          <Input label="Kelp amount" value={amount} onChange={handleChange} />
-          <Button className="font-bold text-2xl ml-8" onClick={handleBuy}>
-            Buy Kelp
-          </Button>
+        <div className="flex justify-center items-center text-center mt-24">
+          <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl">
+            Kelp Price: ${kelpPrice}
+          </h2>
+          <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl ml-4">
+            BNB Price: ${utils.formatEther(bnbPrice as BigNumber).slice(0, 6)}
+          </h2>
+        </div>
+
+        <div className="flex flex-col justify-center items-center mt-12">
+          <div className="flex justify-center items-center">
+            <Input label="Kelp amount" value={amount} onChange={handleChange} />
+            <Button className="font-bold text-2xl ml-8" onClick={handleBuy}>
+              Buy Kelp
+            </Button>
+          </div>
+          {error && <p className="text-red text-lg">{error}</p>}
         </div>
         {confirmPurchaseModal && (
           <ConfirmPurchase
             show={confirmPurchaseModal}
             onHide={() => setConfirmPurchaseModal(false)}
             onConfirm={handleConfirmBuy}
+            bnbAmount={utils.formatEther(
+              utils
+                .parseEther(amount)
+                .mul(utils.parseEther(kelpPrice))
+                .div(bnbPrice as BigNumber)
+            )}
             amount={amount}
+            kelpPrice={kelpPrice}
           />
         )}
       </main>

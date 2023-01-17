@@ -8,11 +8,15 @@ interface Props {
   onHide: () => void;
   onConfirm: () => void;
   amount: string;
+  bnbAmount: string;
+  kelpPrice: string;
 }
 
 const ConfirmPurchase: FunctionComponent<Props> = ({
   show,
   amount,
+  bnbAmount,
+  kelpPrice,
   onHide,
   onConfirm,
 }) => {
@@ -54,7 +58,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
               className="pl-6 pb-10 lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
               style={{ color: "#2C2D2F" }}
             >
-              $5.00 BUSD
+              {bnbAmount} BNB
             </span>
           </li>
 
@@ -110,7 +114,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
               className="pl-7 pb-14 text-xs leading-6 font-medium  mt"
               style={{ color: "#2C2D2F" }}
             >
-              $0.001 per KELP{" "}
+              ${kelpPrice} per KELP{" "}
             </span>
           </li>
           <li>
@@ -131,7 +135,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                 className="lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
                 style={{ color: "#2C2D2F" }}
               >
-                {amount}
+                {amount} Kelp
               </p>
             </p>
           </li>
