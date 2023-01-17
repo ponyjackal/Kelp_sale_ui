@@ -8,7 +8,7 @@ import TokenBalance from "./TokenBalance";
 
 type Address = `0x${string}`;
 
-const tokenAddress = process.env.KELP_TOKEN_ADDRESS as Address;
+const tokenAddress = process.env.NEXT_PUBLIC_KELP_TOKEN_ADDRESS as Address;
 
 const Header = () => {
   const { address, isConnected } = useAccount();
