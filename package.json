@@ -23,6 +23,7 @@
     "@web3-react/walletlink-connector": "^6.2.14",
     "@web3modal/ethereum": "^2.0.0-rc.2",
     "@web3modal/react": "^2.0.0-rc.2",
+    "bootstrap": "^5.2.3",
     "next": "^13.1.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",

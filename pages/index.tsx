@@ -7,6 +7,7 @@ import TotalRaised from "../components/TotalRaised";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import ConfirmPurchase from "../components/ConfirmPurchase";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function Home() {
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
@@ -23,11 +24,14 @@ function Home() {
   };
 
   const handleBuy = () => {
+    if (!amount) return;
+
+    setConfirmPurchaseModal(true);
     console.log("kelp amount", utils.formatEther(utils.parseEther(amount)));
   };
 
   return (
-    <div>
+    <div className="h-screen bg-gray-2">
       <Head>
         <title>KELP Private Sale</title>
         <link rel="icon" href="/favicon.ico" />
@@ -48,10 +52,7 @@ function Home() {
 
         <div className="flex justify-center items-center mt-24">
           <Input label="Kelp amount" value={amount} onChange={handleChange} />
-          <Button
-            className="font-bold text-2xl ml-8"
-            onClick={() => setConfirmPurchaseModal(true)}
-          >
+          <Button className="font-bold text-2xl ml-8" onClick={handleBuy}>
             Buy Kelp
           </Button>
         </div>
@@ -60,6 +61,7 @@ function Home() {
             show={confirmPurchaseModal}
             onHide={() => setConfirmPurchaseModal(false)}
             onConfirm={handleConfirmBuy}
+            amount={amount}
           />
         )}
       </main>

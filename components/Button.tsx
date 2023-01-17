@@ -22,7 +22,7 @@ const Button = ({
   if (variant === "secondary") {
     return (
       <button
-        className={`bg-white text-primary hover:bg-light-gray font-helvetica text-lg px-4 py-2 border-2 border-secondary rounded-lg ${className}`}
+        className={`bg-white text-green-1 hover:bg-light-gray font-helvetica text-lg px-4 py-2 border-2 border-secondary rounded-lg ${className}`}
         onClick={onClick}
         disabled={disabled}
       >
@@ -33,7 +33,7 @@ const Button = ({
 
   return (
     <button
-      className={`bg-primary hover:bg-primary-1 text-white font-helvetica text-lg px-4 py-2  border-2 border-secondary rounded-lg ${className}`}
+      className={`bg-green-1 hover:bg-green-2 text-white font-helvetica text-lg px-4 py-2  border-2 border-secondary rounded-lg ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

@@ -7,10 +7,12 @@ interface Props {
   show?: boolean;
   onHide: () => void;
   onConfirm: () => void;
+  amount: string;
 }
 
 const ConfirmPurchase: FunctionComponent<Props> = ({
   show,
+  amount,
   onHide,
   onConfirm,
 }) => {
@@ -129,7 +131,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                 className="lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
                 style={{ color: "#2C2D2F" }}
               >
-                500,000.00
+                {amount}
               </p>
             </p>
           </li>
