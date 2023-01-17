@@ -33,7 +33,7 @@ const Button = ({
 
   return (
     <button
-      className={`bg-primary hover:bg-secondary-dark text-white font-helvetica text-lg px-4 py-2  border-2 border-secondary rounded-lg ${className}`}
+      className={`bg-primary hover:bg-primary-1 text-white font-helvetica text-lg px-4 py-2  border-2 border-secondary rounded-lg ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

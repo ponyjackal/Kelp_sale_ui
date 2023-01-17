@@ -1,11 +1,31 @@
 import { useState } from "react";
 import Head from "next/head";
+import { utils } from "ethers";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
 import TotalRaised from "../components/TotalRaised";
 import Button from "../components/Button";
+import Input from "../components/Input";
+import ConfirmPurchase from "../components/ConfirmPurchase";
 
 function Home() {
+  const [confirmPurchaseModal, setConfirmPurchaseModal] =
+    useState<boolean>(false);
+
+  const [amount, setAmount] = useState<string>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value);
+  };
+
+  const handleConfirmBuy = () => {
+    console.log("kelp amount", utils.formatEther(utils.parseEther(amount)));
+  };
+
+  const handleBuy = () => {
+    console.log("kelp amount", utils.formatEther(utils.parseEther(amount)));
+  };
+
   return (
     <div>
       <Head>
@@ -26,14 +46,22 @@ function Home() {
 
         <TotalRaised />
 
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center mt-24">
+          <Input label="Kelp amount" value={amount} onChange={handleChange} />
           <Button
-            className="font-bold text-2xl"
-            onClick={() => console.log("Buy Kelp")}
+            className="font-bold text-2xl ml-8"
+            onClick={() => setConfirmPurchaseModal(true)}
           >
             Buy Kelp
           </Button>
         </div>
+        {confirmPurchaseModal && (
+          <ConfirmPurchase
+            show={confirmPurchaseModal}
+            onHide={() => setConfirmPurchaseModal(false)}
+            onConfirm={handleConfirmBuy}
+          />
+        )}
       </main>
     </div>
   );

@@ -3,17 +3,7 @@ import useWeiRaised from "../hooks/useWeiRaised";
 import { parseBalance } from "../util";
 
 const TotalRaised = () => {
-  const { data, error, isLoading } = useWeiRaised();
-
-  if (error) {
-    return "something went wrong";
-  }
-
-  if (isLoading) {
-    return "loading";
-  }
-
-  console.log("Data", data);
+  const { data, error, isLoading, status } = useWeiRaised();
 
   return (
     <div className="text-left mt-10">

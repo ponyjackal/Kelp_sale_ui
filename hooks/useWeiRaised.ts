@@ -9,11 +9,8 @@ export default function useWeiRaised() {
     address: crowdSaleContractAddress,
     abi: crowdSaleABI,
     functionName: "weiRaised",
-    chainId: 56,
-    // watch: true,
-    onSettled(data, error) {
-      console.log("Settled", { data, error });
-    },
+    scopeKey: "weiRaised",
+    watch: true,
   });
 
   return contract;
