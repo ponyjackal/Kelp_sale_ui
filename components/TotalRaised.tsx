@@ -1,42 +1,23 @@
 import { useMemo } from "react";
 import { ProgressBar } from "react-bootstrap";
 import { utils, BigNumber } from "ethers";
-import { useContractReads } from "wagmi";
-import crowdSaleABI from "../contracts/CrowdSale.json";
-
-const crowdSaleContractAddress = process.env
-  .NEXT_PUBLIC_CROWD_SALE_ADDRESS as `0x${string}`;
-
-const crowdSaleContract = {
-  address: crowdSaleContractAddress,
-  abi: crowdSaleABI,
-};
+import useBNBPrice from "../hooks/useBNBPrice";
+import useWeiRaised from "../hooks/useWeiRaised";
 
 const TotalRaised = () => {
-  const { data } = useContractReads({
-    contracts: [
-      {
-        ...crowdSaleContract,
-        functionName: "weiRaised",
-      },
-      {
-        ...crowdSaleContract,
-        functionName: "getBNBPrice",
-      },
-    ],
-    watch: true,
-  });
-
-  const totalWeiRaised = (data[0] as BigNumber) ?? 0;
-  const bnbPrice = (data[1] as BigNumber) ?? 0;
+  const { data: bnbPriceRaw } = useBNBPrice();
+  const { data: totalWeiRaisedRaw } = useWeiRaised();
 
   const totalRaised = useMemo(() => {
-    if (!totalWeiRaised || !bnbPrice) {
+    if (!bnbPriceRaw || !totalWeiRaisedRaw) {
       return 0;
     }
 
+    const bnbPrice = bnbPriceRaw as BigNumber;
+    const totalWeiRaised = totalWeiRaisedRaw as BigNumber;
+
     return utils.formatEther(totalWeiRaised.mul(bnbPrice));
-  }, [totalWeiRaised, bnbPrice]);
+  }, [totalWeiRaisedRaw, bnbPriceRaw]);
 
   return (
     <div className="text-left mt-10">
