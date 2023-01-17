@@ -6,20 +6,17 @@ type TokenBalanceProps = {
 };
 
 const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
-  const { address, isConnected } = useAccount();
-  const { data, isLoading, isError } = useBalance({
+  const { address } = useAccount();
+  const { data } = useBalance({
     address,
-    token: "0x048AB7bb99c8a57F3eE0FbcCF196A2b37E5Be3D7",
+    token: tokenAddress,
     chainId: 56,
   });
-
-  if (isLoading) return <div>…</div>;
-  if (isError) return <div>error</div>;
 
   return (
     <p className="text-gray-dark">
       {`${data?.symbol} Balance`}:{" "}
-      <strong>{parseBalance(data?.value ?? 0)}</strong>
+      <strong>{data ? parseBalance(data?.value ?? 0) : 0}</strong>
     </p>
   );
 };
