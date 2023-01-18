@@ -25,7 +25,7 @@ export default function HomePage() {
 
   return (
     <>
-      {isConnected ? (
+      {isConnected && address ? (
         <Button variant="secondary" onClick={onClose} disabled={loading}>
           {data || `${shortenHex(address, 4)}`}
         </Button>

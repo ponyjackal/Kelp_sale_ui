@@ -22,12 +22,14 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
 }) => {
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
   const { data, isLoading, isSuccess, write, error } = useBuyKelp(
-    address,
+    address ?? "",
     bnbAmount
   );
 
   const handlePurchase = () => {
-    write();
+    if (write) {
+      write();
+    }
   };
 
   return (
