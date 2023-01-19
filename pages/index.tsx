@@ -13,6 +13,7 @@ import ETHBalance from "../components/ETHBalance";
 import TokenBalance from "../components/TokenBalance";
 import useBNBPrice from "../hooks/useBNBPrice";
 import useKelpPrice from "../hooks/useKelpPrice";
+import useLimitPerAccount from "../hooks/useLimitPerAccount";
 import { KELP_TOKEN_ADDRESS } from "../utils/constants";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,6 +21,7 @@ import "react-toastify/dist/ReactToastify.css";
 function Home() {
   const { address, isConnected } = useAccount();
   const { kelpPrice } = useKelpPrice();
+  const { limitPerAccount } = useLimitPerAccount();
 
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
     useState<boolean>(false);
@@ -64,8 +66,8 @@ function Home() {
   };
 
   const handleBuy = () => {
-    if (!amount) {
-      setError("Amount is required");
+    if (!amount || parseFloat(amount) <= 0) {
+      setError("Invalid Amount");
       return;
     }
 
@@ -74,7 +76,19 @@ function Home() {
       return;
     }
 
+    if (
+      limitPerAccount !== "0.0" &&
+      parseFloat(amount) > parseFloat(limitPerAccount)
+    ) {
+      setError("Limit amount per account exceed");
+      return;
+    }
+
     setConfirmPurchaseModal(true);
+  };
+
+  const handleMaxButton = () => {
+    setAmount(limitPerAccount);
   };
 
   const handleTx = (isSuccess: boolean) => {
@@ -126,7 +140,13 @@ function Home() {
 
         <div className="flex flex-col justify-center items-center mt-12">
           <div className="flex justify-center items-center">
-            <Input label="Kelp amount" value={amount} onChange={handleChange} />
+            <Input
+              label="Kelp amount"
+              value={amount}
+              hasLimit={limitPerAccount !== "0.0"}
+              onChange={handleChange}
+              handleMaxButton={handleMaxButton}
+            />
             <Button className="font-bold text-2xl ml-8" onClick={handleBuy}>
               Buy
             </Button>
