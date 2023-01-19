@@ -14,15 +14,15 @@ const Header = () => {
   const { address, isConnected } = useAccount();
 
   return (
-    <header className="px-8 py-4">
+    <header className="px-8 py-4 bg-gray-2">
       <nav className="flex justify-between items-center">
         <Link href="/" passHref>
           <Image src={"/kelp.png"} width={82} height={40} alt="logo" />
         </Link>
 
-        <section className="flex items-center">
+        <section className="flex justify-center items-baseline">
           {isConnected && (
-            <div className="grid grid-cols-2 gap-4 mr-8">
+            <div className="hidden sm:grid grid-cols-2 gap-4 mr-8">
               <ETHBalance />
 
               <TokenBalance tokenAddress={tokenAddress} />

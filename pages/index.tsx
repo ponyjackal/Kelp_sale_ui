@@ -9,9 +9,15 @@ import TotalRaised from "../components/TotalRaised";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import ConfirmPurchase from "../components/ConfirmPurchase";
+import ETHBalance from "../components/ETHBalance";
+import TokenBalance from "../components/TokenBalance";
 import useBNBPrice from "../hooks/useBNBPrice";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
+
+type Address = `0x${string}`;
+
+const tokenAddress = process.env.NEXT_PUBLIC_KELP_TOKEN_ADDRESS as Address;
 
 const kelpPrice = "0.001";
 
@@ -92,9 +98,18 @@ function Home() {
 
       <Header />
 
-      <main className="px-24 py-16">
+      <main className="px-8 sm:px-24 py-8 sm:py-16 bg-gray-2">
+        <section className="block sm:hidden mb-8 sm:mb-0">
+          {isConnected && (
+            <div className="grid grid-cols-2 gap-4 mr-8">
+              <ETHBalance />
+
+              <TokenBalance tokenAddress={tokenAddress} />
+            </div>
+          )}
+        </section>
         <section>
-          <h1 className="text-gray-1 text-left font-bold leading-6 xs:text-2xl xxs:text-2xl xxxs:text-2xl md:text-3xl lg:text-3xl">
+          <h1 className="text-gray-1 text-left font-bold leading-6 text-2xl md:text-3xl">
             PRIVATE SALE
           </h1>
         </section>
@@ -116,7 +131,7 @@ function Home() {
           <div className="flex justify-center items-center">
             <Input label="Kelp amount" value={amount} onChange={handleChange} />
             <Button className="font-bold text-2xl ml-8" onClick={handleBuy}>
-              Buy Kelp
+              Buy
             </Button>
           </div>
           {error && <p className="text-red text-lg">{error}</p>}

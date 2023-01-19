@@ -95,3 +95,7 @@ a {
   box-sizing: border-box;
   font-family: arial;
 }
+
+.dropdown button {
+  color: #46d6a2 !important;
+}

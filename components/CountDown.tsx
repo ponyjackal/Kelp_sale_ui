@@ -23,7 +23,7 @@ const CountDownRenderer: FunctionComponent<CountDownRendererProps> = ({
 }) => {
   return (
     <>
-      <div className="grid grid-cols-4 md:mt-9 lg:mt-9 divide-x-2">
+      <div className="grid grid-cols-4 md:mt-9 lg:mt-9 sm:divide-x-2">
         <div className="text-center">
           <p className="md:text-4xl lg:text-4xl xs:text-xl xxs:text-xl xxxs:text-xl font-light tracking-widest">
             {days}
