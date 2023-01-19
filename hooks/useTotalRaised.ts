@@ -4,12 +4,13 @@ import crowdSaleABI from "../contracts/CrowdSale.json";
 const crowdSaleContractAddress = process.env
   .NEXT_PUBLIC_CROWD_SALE_ADDRESS as `0x${string}`;
 
-export default function useWeiRaised() {
+export default function useTotalRaised(type: string) {
   const contract = useContractRead({
     address: crowdSaleContractAddress,
     abi: crowdSaleABI,
-    functionName: "weiRaised",
-    scopeKey: "weiRaised",
+    functionName: "totalSales",
+    scopeKey: "totalSales",
+    args: [type],
     watch: true,
   });
 

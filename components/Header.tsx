@@ -5,10 +5,7 @@ import Account from "./Account";
 import { useAccount } from "wagmi";
 import ETHBalance from "./ETHBalance";
 import TokenBalance from "./TokenBalance";
-
-type Address = `0x${string}`;
-
-const tokenAddress = process.env.NEXT_PUBLIC_KELP_TOKEN_ADDRESS as Address;
+import { KELP_TOKEN_ADDRESS } from "../utils/constants";
 
 const Header = () => {
   const { address, isConnected } = useAccount();
@@ -25,7 +22,7 @@ const Header = () => {
             <div className="hidden sm:grid grid-cols-2 gap-4 mr-8">
               <ETHBalance />
 
-              <TokenBalance tokenAddress={tokenAddress} />
+              <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
             </div>
           )}
 

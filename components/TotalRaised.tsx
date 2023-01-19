@@ -1,32 +1,59 @@
 import { useMemo } from "react";
 import { ProgressBar } from "react-bootstrap";
-import { utils, BigNumber } from "ethers";
-import useWeiRaised from "../hooks/useWeiRaised";
+import { utils, BigNumber, constants } from "ethers";
+import useTotalRaised from "../hooks/useTotalRaised";
+import useSales from "../hooks/useSales";
+import useKelpPrice from "../hooks/useKelpPrice";
+import { SALE_TYPE, DECIMAL } from "../utils/constants";
 
 const TotalRaised = () => {
-  const { data: totalWeiRaisedRaw } = useWeiRaised();
+  const { data: totalRaisedRaw } = useTotalRaised(SALE_TYPE);
+  const { data: saleInfo } = useSales(SALE_TYPE);
+  const { kelpPrice } = useKelpPrice();
 
   const totalRaised = useMemo(() => {
-    if (!totalWeiRaisedRaw) {
-      return 0;
+    if (!totalRaisedRaw || !kelpPrice) {
+      return "0.0";
     }
 
-    const totalWeiRaised = utils.formatEther(totalWeiRaisedRaw as BigNumber);
+    const totalRaisedBN = totalRaisedRaw as BigNumber;
 
-    return totalWeiRaised.slice(0, totalWeiRaised.indexOf(".") + 6);
-  }, [totalWeiRaisedRaw]);
+    const totalRaisedStr = utils.formatEther(
+      totalRaisedBN.mul(utils.parseEther(kelpPrice)).div(DECIMAL)
+    );
+
+    return totalRaisedStr.slice(0, totalRaisedStr.indexOf(".") + 6);
+  }, [totalRaisedRaw, kelpPrice]);
+
+  const totalLimit = useMemo(() => {
+    if (!saleInfo) {
+      return "0.0";
+    }
+
+    const totalLimitRaw = saleInfo.totalLimit;
+    const totalLimitStr = utils.formatEther(
+      totalLimitRaw.mul(utils.parseEther(kelpPrice)).div(DECIMAL)
+    );
+
+    return totalLimitStr.slice(0, totalLimitStr.indexOf(".") + 6);
+  }, [saleInfo, kelpPrice]);
+
+  const percentage =
+    totalLimit !== "0.0"
+      ? Math.floor(parseFloat(totalRaised) / parseFloat(totalLimit))
+      : 0;
 
   return (
     <div className="text-left mt-10">
       <p className="text-gray-1 text-sm sm:text-lg mb-1">TOTAL RAISED</p>
       <p className="text-green-1 font-bold text-lg sm:text-2xl mb-2.5 md:mb-6">
-        {totalRaised ?? 0} BNB
+        $ {totalRaised ?? 0}
       </p>
       <div className="relative progress-container">
-        <ProgressBar now={10} />
+        <ProgressBar now={percentage} />
       </div>
       <p className="text-base text-right text-gray-1 font-medium mt-3">
-        $1,000,000 HARD CAP
+        ${totalLimit} HARD CAP
       </p>
     </div>
   );

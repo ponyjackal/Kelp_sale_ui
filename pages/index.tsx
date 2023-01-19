@@ -12,17 +12,14 @@ import ConfirmPurchase from "../components/ConfirmPurchase";
 import ETHBalance from "../components/ETHBalance";
 import TokenBalance from "../components/TokenBalance";
 import useBNBPrice from "../hooks/useBNBPrice";
+import useKelpPrice from "../hooks/useKelpPrice";
+import { KELP_TOKEN_ADDRESS } from "../utils/constants";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 
-type Address = `0x${string}`;
-
-const tokenAddress = process.env.NEXT_PUBLIC_KELP_TOKEN_ADDRESS as Address;
-
-const kelpPrice = "0.001";
-
 function Home() {
   const { address, isConnected } = useAccount();
+  const { kelpPrice } = useKelpPrice();
 
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
     useState<boolean>(false);
@@ -47,7 +44,7 @@ function Home() {
         .mul(utils.parseEther(kelpPrice))
         .div(bnbPrice as BigNumber)
     );
-  }, [bnbPrice, amount]);
+  }, [bnbPrice, amount, kelpPrice]);
 
   const notifySuccess = () => {
     toast.success("You bought Kelp token successfully!", {
@@ -104,7 +101,7 @@ function Home() {
             <div className="grid grid-cols-2 gap-4 mr-8">
               <ETHBalance />
 
-              <TokenBalance tokenAddress={tokenAddress} />
+              <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
             </div>
           )}
         </section>
