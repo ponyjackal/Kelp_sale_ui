@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import Head from "next/head";
 import { useAccount } from "wagmi";
 import { BigNumber, utils } from "ethers";
+import { ToastContainer, toast } from "react-toastify";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
 import TotalRaised from "../components/TotalRaised";
@@ -10,6 +11,7 @@ import Input from "../components/Input";
 import ConfirmPurchase from "../components/ConfirmPurchase";
 import useBNBPrice from "../hooks/useBNBPrice";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const kelpPrice = "0.001";
 
@@ -41,6 +43,18 @@ function Home() {
     );
   }, [bnbPrice, amount]);
 
+  const notifySuccess = () => {
+    toast.success("You bought Kelp token successfully!", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  };
+
+  const notifyError = () => {
+    toast.error("Something went wrong!", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
     setAmount(e.target.value);
@@ -58,6 +72,15 @@ function Home() {
     }
 
     setConfirmPurchaseModal(true);
+  };
+
+  const handleTx = (isSuccess: boolean) => {
+    if (isSuccess) {
+      notifySuccess();
+    } else {
+      notifyError();
+    }
+    setConfirmPurchaseModal(false);
   };
 
   return (
@@ -105,9 +128,11 @@ function Home() {
             bnbAmount={bnbAmount}
             amount={amount}
             kelpPrice={kelpPrice}
+            onSettle={handleTx}
           />
         )}
       </main>
+      <ToastContainer />
     </div>
   );
 }

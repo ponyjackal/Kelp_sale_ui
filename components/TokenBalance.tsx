@@ -11,6 +11,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
     address,
     token: tokenAddress,
     chainId: 56,
+    watch: true,
   });
 
   return (
