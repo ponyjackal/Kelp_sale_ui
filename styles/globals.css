@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,8 +13,33 @@ body {
   margin: 0;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 button {
   border: none !important;
+}
+
+html * {
+  font-family: \'Poppins\', sans-serif !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[value=\"0.00\"] {
+  width: 4ch;
 }
 
 main {
@@ -18,40 +47,23 @@ main {
   margin: 0px;
 }
 
-html *
-{
-   font-family: 'Poppins', sans-serif !important;
+.btn-header {
+  vertical-align: baseline !important;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  border: none !important;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.progress-container .progress {
-  height: 10px;
-  background-color: #cdcece !important;
-  border-radius: 20px;
-}
-
-.token-balance-text {
-  color: #CDCECE;
-  font-weight: 600;
-  font-size: 20px;
+.buy-kelp-btn {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
   line-height: 24px;
-
-}
-
-.progress-container .progress-bar {
-  background-color: #46d6a2 !important;
-  position: absolute;
-  top: -5px;
-  height: 19px;
-  border-radius: 20px;
+  width: 404px;
+  max-width: 60vw;
+  height: 56px;
 }
 
 .center-items {
@@ -60,18 +72,33 @@ a {
   margin: 0 auto;
 }
 
-.events li {
-  display: flex;
-  color: #999;
+.countdown-time-metric {
+  font-size: 16px !important;
+  font-weight: 500;
+  line-height: 24px !important;
 }
 
-.events time {
-  position: relative;
-  padding: 0 0.7em;
+.dropdown #dropdown-currencies {
+  margin-right: 20px;
+  background-color: #46d6a2;
+}
+
+.eth-balance-text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.events .image {
+  /* content: \"\"; */
+  position: absolute;
+  z-index: 2;
+  left: 3;
+  transform: translateX(60%);
 }
 
 .events .image1 {
-  /* content: ""; */
+  /* content: \"\"; */
   position: absolute;
   z-index: 2;
   left: 1;
@@ -85,12 +112,9 @@ a {
    height: .8em; */
 }
 
-.events .image {
-  /* content: ""; */
-  position: absolute;
-  z-index: 2;
-  left: 3;
-  transform: translateX(60%);
+.events li {
+  display: flex;
+  color: #999;
 }
 
 .events span {
@@ -98,7 +122,7 @@ a {
 }
 
 .events span::before {
-  content: "";
+  content: \"\";
   position: absolute;
   z-index: 1;
   left: 0;
@@ -112,6 +136,11 @@ a {
   font-weight: bolder;
 }
 
+.events time {
+  position: relative;
+  padding: 0 0.7em;
+}
+
 .events {
   width: 100%;
 }
@@ -123,56 +152,6 @@ a {
   font-family: arial;
 }
 
-#connect-wallet {
-  background-color: #46d6a2 !important;
-}
-
-.toggle-btn {
-  background-color: #46d6a2 !important;
-}
-
-.py-8 {
-  padding-top: 0px !important;
-}
-
-.dropdown #dropdown-currencies {
-  margin-left: 5px;
-  margin-right: 5px;
-  background-color: #46d6a2;
-}
-
-.text-white {
-  color: white;
-}
-
-.eth-balance-text {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 24px;
-}
-
-.btn-header {
-  vertical-align: baseline !important;
-  font-style: normal;
-  font-weight: 700 !important;
-  font-size: 16px !important;
-  line-height: 24px !important;
-}
-
-.buy-kelp-btn {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 24px;
-  width: 404px;
-  max-width: 60vw;
-  height: 56px;
-}
-
-input[value="0.00"] {
-  width: 4ch;
-}
-
 .input-amount {
   background: transparent;
   width: 4ch;
@@ -180,7 +159,6 @@ input[value="0.00"] {
   border-right-style: hidden;
   border-left-style: hidden;
   border-bottom-style: groove;
-  direction: rtl;
   text-align: center;
   font-style: normal;
   font-weight: 600;
@@ -194,14 +172,92 @@ input[value="0.00"] {
   outline: none;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.kelp-token-logo {
+  display: inline-block;
+  margin-right: 5px;
+  height: 24px;
+  width: auto;
 }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
+.progress-container .progress {
+  height: 10px;
+  background-color: #cdcece !important;
+  border-radius: 20px;
+}
+
+.progress-container .progress-bar {
+  background-color: #46d6a2 !important;
+  position: absolute;
+  top: -5px;
+  height: 19px;
+  border-radius: 20px;
+}
+
+.py-8 {
+  padding-top: 0px !important;
+}
+
+.text-left {
+  font-size: 24px !important;
+  font-weight: 700;
+}
+
+.text-right {
+  float: right;
+  font-size: 24px !important;
+  font-weight: 700;
+}
+
+.text-white {
+  color: white;
+}
+
+.toggle-btn {
+  background-color: #46d6a2 !important;
+}
+
+.token-balance {
+  margin-right: 20px;
+}
+
+.token-balance-strong {
+  vertical-align: baseline !important;
+  border: none;
+  color: #46d6a2;
+}
+
+.token-balance-text {
+  font-weight: 600;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  background-color: white !important;
+  color: #46d6a2;
+  margin: 0 auto;
+  margin-bottom: 20px !important;
+}
+
+.tracking-widest {
+  font-size: 48px !important;
+  font-weight: 700 !important;
+}
+
+#connect-wallet {
+  background-color: #46d6a2 !important;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+#enter-amount-text {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #cdcece;
 }

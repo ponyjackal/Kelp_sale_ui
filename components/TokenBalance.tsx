@@ -1,5 +1,7 @@
 import { useAccount, useBalance } from "wagmi";
 import { parseBalance } from "../util";
+import Image from "next/image";
+import tokenLogo from "../public/token-logo.png";
 
 type TokenBalanceProps = {
   tokenAddress: `0x${string}`;
@@ -15,9 +17,15 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   });
 
   return (
-    <p className="token-balance-text">
-      {`${data?.symbol} Balance`}:{" "}
-      <strong>{data ? parseBalance(data?.value ?? 0) : 0}</strong>
+    <p className="token-balance-text text-green-1 font-helvetica text-lg py-2 rounded-lg btn-header btn">
+      <Image
+        className="kelp-token-logo"
+        src={tokenLogo}
+        alt={data?.symbol || "tKELP"}
+      ></Image>
+      <strong className="token-balance-strong">
+        {data ? parseBalance(data?.value ?? 0) : 0}
+      </strong>
     </p>
   );
 };

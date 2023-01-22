@@ -20,14 +20,14 @@ const Header = () => {
 
         <section className="flex justify-center items-baseline">
           {isConnected && (
-            <div className="hidden sm:grid grid-cols-1 gap-4 mr-8">
+            <div className="hidden sm:grid grid-cols-1 gap-4 token-balance btn-header">
               <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
             </div>
           )}
           {isConnected && (
             <Dropdown>
               <Dropdown.Toggle
-                className="font-helvetica btn-header text-lg py-2 border-2 border-secondary rounded-lg"
+                className="toggle-btn text-green-1 font-helvetica text-lg py-2 rounded-lg btn-header"
                 id="dropdown-currencies"
               >
                 {selectedCurrency}

@@ -6,10 +6,10 @@ import Button from "./Button";
 import { shortenHex } from "../util";
 
 type DropDownToggleProps = {
-  className?: string
+  className?: string;
 };
 
-export default function HomePage({className}: DropDownToggleProps) {
+export default function HomePage({ className }: DropDownToggleProps) {
   const [loading, setLoading] = useState(false);
   const { open, close } = useWeb3Modal();
   const { address, isConnected } = useAccount();
@@ -33,7 +33,7 @@ export default function HomePage({className}: DropDownToggleProps) {
       {isConnected && address ? (
         <Dropdown>
           <Dropdown.Toggle
-            className={`toggle-btn text-green-1 font-helvetica text-lg px-4 py-2 border-2 border-secondary rounded-lg ${className}`}
+            className={`toggle-btn text-green-1 font-helvetica text-lg py-2 rounded-lg btn-header ${className}`}
             id="dropdown-basic"
           >
             {data || `${shortenHex(address, 4)}`}

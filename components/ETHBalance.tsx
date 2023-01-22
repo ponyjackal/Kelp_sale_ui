@@ -2,7 +2,7 @@ import { useAccount, useBalance } from "wagmi";
 import { parseBalance } from "../util";
 
 const ETHBalance = () => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data, isError, isLoading } = useBalance({
     address,
     chainId: 56,
@@ -13,7 +13,7 @@ const ETHBalance = () => {
 
   return (
     <p className="eth-balance-text center-items">
-      BNB Balance: {parseBalance(data?.value ?? 0)}
+      {isConnected && `BNB Balance: ${parseBalance(data?.value ?? 0)}`}
     </p>
   );
 };

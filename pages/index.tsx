@@ -68,15 +68,16 @@ function Home() {
     } else {
       newValue = parseFloat(e.target.value) * 10;
     }
-    console.log(newValue, e.target.value, amount);
     setAmount(parseFloat(newValue.toString()).toFixed(2));
   };
 
   const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
     e.currentTarget.style.width = e.currentTarget.value.length + "ch";
     e.currentTarget.style.color = "black";
-    if(e.currentTarget.parentElement) {
-      e.currentTarget.parentElement.getElementsByTagName("text")[0].style.color = "black";
+    if (e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.getElementsByTagName(
+        "span"
+      )[0].style.color = "black";
     }
     const value = e.currentTarget.value;
     e.currentTarget.value = "";
@@ -86,8 +87,10 @@ function Home() {
   const handleTouch = (e: React.TouchEvent<HTMLInputElement>) => {
     e.currentTarget.style.width = e.currentTarget.value.length + "ch";
     e.currentTarget.style.color = "black";
-    if(e.currentTarget.parentElement) {
-      e.currentTarget.parentElement.getElementsByTagName("text")[0].style.color = "black";
+    if (e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.getElementsByTagName(
+        "span"
+      )[0].style.color = "black";
     }
     const value = e.currentTarget.value;
     e.currentTarget.value = "";
@@ -101,8 +104,10 @@ function Home() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.currentTarget.style.color = "black";
-    if(e.currentTarget.parentElement) {
-      e.currentTarget.parentElement.getElementsByTagName("text")[0].style.color = "black";
+    if (e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.getElementsByTagName(
+        "span"
+      )[0].style.color = "black";
     }
     if (e.key === "Delete" || e.key === "Backspace") {
       setAmount("0.00");
@@ -194,6 +199,7 @@ function Home() {
 
         <div>
           <div>
+            <span id={"enter-amount-text"}>ENTER AMOUNT</span>
             <Input
               value={amount}
               onPaste={(e) => {
