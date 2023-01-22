@@ -29,7 +29,7 @@ export default function HomePage() {
       {isConnected && address ? (
         <Dropdown>
           <Dropdown.Toggle
-            className="bg-white text-green-1 hover:bg-light-gray font-helvetica text-lg px-4 py-2 border-2 border-secondary rounded-lg"
+            className="toggle-btn text-green-1 font-helvetica text-lg px-4 py-2 border-2 border-secondary rounded-lg"
             id="dropdown-basic"
           >
             {data || `${shortenHex(address, 4)}`}
@@ -42,7 +42,13 @@ export default function HomePage() {
           </Dropdown.Menu>
         </Dropdown>
       ) : (
-        <Button variant="primary" onClick={onOpen} disabled={loading}>
+        <Button
+          id="connect-wallet"
+          className="btn"
+          variant="primary"
+          onClick={onOpen}
+          disabled={loading}
+        >
           {loading ? "Loading..." : "Connect Wallet"}
         </Button>
       )}

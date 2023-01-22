@@ -4,6 +4,7 @@ type Variant = "primary" | "secondary" | "transparent";
 type Size = "small" | "medium" | "large";
 
 type ButtonProps = {
+  id?: string;
   className?: string;
   variant?: Variant;
   size?: Size;
@@ -13,6 +14,7 @@ type ButtonProps = {
 };
 
 const Button = ({
+  id,
   className,
   variant = "primary",
   disabled,
@@ -22,7 +24,8 @@ const Button = ({
   if (variant === "secondary") {
     return (
       <button
-        className={`bg-white text-green-1 hover:bg-light-gray font-helvetica text-lg px-4 py-2 border-2 border-secondary rounded-lg ${className}`}
+        id={id}
+        className={`bg-white text-green-1 hover:bg-light-gray font-helvetica text-lg py-2 border-2 border-secondary rounded-lg ${className}`}
         onClick={onClick}
         disabled={disabled}
       >
@@ -33,7 +36,8 @@ const Button = ({
 
   return (
     <button
-      className={`bg-green-1 hover:bg-green-2 text-white font-helvetica text-lg px-4 py-2  border-2 border-secondary rounded-lg ${className}`}
+      id={id}
+      className={`bg-green-1 hover:bg-green-2 text-white font-helvetica text-lg py-2  border-2 border-secondary rounded-lg ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

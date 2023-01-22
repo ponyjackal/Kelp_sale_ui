@@ -15,7 +15,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   });
 
   return (
-    <p className="text-gray-dark">
+    <p className="token-balance-text">
       {`${data?.symbol} Balance`}:{" "}
       <strong>{data ? parseBalance(data?.value ?? 0) : 0}</strong>
     </p>

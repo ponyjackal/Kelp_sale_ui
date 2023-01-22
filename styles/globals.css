@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css?family=Poppins:regular,bold,italic&subset=latin,latin-ext');
 
 html,
 body {
@@ -25,12 +26,23 @@ a {
   border-radius: 20px;
 }
 
+.token-balance-text {
+  color: #CDCECE;
+  font-size: 20px;
+}
+
 .progress-container .progress-bar {
   background-color: #46d6a2 !important;
   position: absolute;
   top: -5px;
   height: 19px;
   border-radius: 20px;
+}
+
+.center-items {
+  text-align: center;
+  display: block;
+  margin: 0 auto;
 }
 
 .events li {
@@ -89,6 +101,7 @@ a {
 .events {
   width: 100%;
 }
+
 .events,
 .events *::before,
 .events *::after {
@@ -96,6 +109,95 @@ a {
   font-family: arial;
 }
 
-.dropdown button {
-  color: #46d6a2 !important;
+#connect-wallet {
+  background-color: #46d6a2 !important;
+}
+
+.toggle-btn {
+  background-color: #46d6a2 !important;
+}
+
+.py-8 {
+  padding-top: 0px !important;
+}
+
+.dropdown #dropdown-currencies {
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: #46d6a2;
+}
+
+.text-white {
+  color: white;
+}
+
+.eth-balance-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.btn {
+  vertical-align: baseline !important;
+}
+
+.buy-kelp-btn {
+  font-style: normal;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  width: 404px;
+  max-width: 60vw;
+  height: 56px;
+  border-radius: 10px;
+}
+
+input[value="0.00"] {
+  width: 4ch;
+}
+
+.input-amount {
+  background: transparent;
+  width: 4ch;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+  direction: rtl;
+  text-align: center;
+  caret-color: transparent;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 55px;
+  line-height: 80px;
+  color: darkgray;
+  max-width: 80vw;
+  -webkit-touch-callout: none;
+  /* Safari */
+  -webkit-user-select: none;
+  /* Chrome */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.input-amount:focus {
+  outline: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

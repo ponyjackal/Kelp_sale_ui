@@ -12,8 +12,8 @@ const ETHBalance = () => {
   if (isError) return <div>error</div>;
 
   return (
-    <p className="text-gray-dark">
-      BNB Balance: <strong>{parseBalance(data?.value ?? 0)}</strong>
+    <p className="eth-balance-text center-items">
+      BNB Balance: {parseBalance(data?.value ?? 0)}
     </p>
   );
 };
