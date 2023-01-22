@@ -26,6 +26,7 @@ const Input = ({
 }: InputProps) => {
   return (
     <div className="relative flex center-items">
+      <text className="input-amount">$</text>
       <input
         className="input-amount"
         step="0.01"

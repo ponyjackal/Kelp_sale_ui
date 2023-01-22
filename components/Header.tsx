@@ -27,7 +27,7 @@ const Header = () => {
           {isConnected && (
             <Dropdown>
               <Dropdown.Toggle
-                className="font-helvetica text-lg py-2 border-2 border-secondary rounded-lg"
+                className="font-helvetica btn-header text-lg py-2 border-2 border-secondary rounded-lg"
                 id="dropdown-currencies"
               >
                 {selectedCurrency}
@@ -42,7 +42,7 @@ const Header = () => {
               </Dropdown.Menu>
             </Dropdown>
           )}
-          <Account />
+          <Account className="btn-header" />
         </section>
       </nav>
     </header>

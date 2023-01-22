@@ -74,6 +74,10 @@ function Home() {
 
   const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
     e.currentTarget.style.width = e.currentTarget.value.length + "ch";
+    e.currentTarget.style.color = "black";
+    if(e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.getElementsByTagName("text")[0].style.color = "black";
+    }
     const value = e.currentTarget.value;
     e.currentTarget.value = "";
     e.currentTarget.value = value;
@@ -81,26 +85,24 @@ function Home() {
 
   const handleTouch = (e: React.TouchEvent<HTMLInputElement>) => {
     e.currentTarget.style.width = e.currentTarget.value.length + "ch";
+    e.currentTarget.style.color = "black";
+    if(e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.getElementsByTagName("text")[0].style.color = "black";
+    }
     const value = e.currentTarget.value;
     e.currentTarget.value = "";
     e.currentTarget.value = value;
   };
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value !== "0.00") {
-      e.currentTarget.style.color = "black";
-    } else {
-      e.currentTarget.style.color = "darkgray";
-    }
     e.currentTarget.style.width = e.currentTarget.value.length + "ch";
     setAmount(e.currentTarget.value);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value !== "0.00") {
-      e.currentTarget.style.color = "black";
-    } else {
-      e.currentTarget.style.color = "darkgray";
+    e.currentTarget.style.color = "black";
+    if(e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.getElementsByTagName("text")[0].style.color = "black";
     }
     if (e.key === "Delete" || e.key === "Backspace") {
       setAmount("0.00");
@@ -163,7 +165,7 @@ function Home() {
 
       <Header />
 
-      <main className="px-8 sm:px-24 py-8 sm:py-16 bg-gray-2">
+      <main className="px-8 md:px-56 py-8 sm:py-16 bg-gray-2">
         <section className="block sm:hidden">
           {isConnected && (
             <div className="grid grid-cols-1 gap-4 mr-8">
