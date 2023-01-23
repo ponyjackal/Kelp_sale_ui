@@ -26,9 +26,9 @@ module.exports = {
       red: "#ff3333",
     },
     fontFamily: {
-      sans: ["Graphik", "sans-serif"],
-      serif: ["Merriweather", "serif"],
-      helvetica: ["Helvetica Neue", "sans-serif"],
+      sans: ["Poppins", "sans-serif"],
+      serif: ["Poppins", "sans-serif"],
+      helvetica: ["Poppins", "sans-serif"],
     },
     screens: {
       xxxs: "320px",

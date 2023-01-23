@@ -26,7 +26,7 @@ function Home() {
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
     useState<boolean>(false);
 
-  const [amount, setAmount] = useState<string>("");
+  const [amount, setAmount] = useState<string>("0.00");
   const [error, setError] = useState<string>("");
 
   const { data: bnbPrice } = useBNBPrice();
@@ -62,7 +62,68 @@ function Home() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
-    setAmount(e.target.value);
+    let newValue = 0;
+    if (e.target.value === "") {
+      newValue = 0;
+    } else {
+      newValue = parseFloat(e.target.value) * 10;
+    }
+    setAmount(parseFloat(newValue.toString()).toFixed(2));
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.currentTarget.style.width = e.currentTarget.value.length + "ch";
+    e.currentTarget.style.color = "black";
+    if (e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.getElementsByTagName(
+        "span"
+      )[0].style.color = "black";
+    }
+    const value = e.currentTarget.value;
+    e.currentTarget.value = "";
+    e.currentTarget.value = value;
+  };
+
+  const handleTouch = (e: React.TouchEvent<HTMLInputElement>) => {
+    e.currentTarget.style.width = e.currentTarget.value.length + "ch";
+    e.currentTarget.style.color = "black";
+    if (e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.getElementsByTagName(
+        "span"
+      )[0].style.color = "black";
+    }
+    const value = e.currentTarget.value;
+    e.currentTarget.value = "";
+    e.currentTarget.value = value;
+  };
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.currentTarget.style.width = e.currentTarget.value.length + "ch";
+    setAmount(e.currentTarget.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.currentTarget.style.color = "black";
+    if (e.currentTarget.parentElement) {
+      e.currentTarget.parentElement.getElementsByTagName(
+        "span"
+      )[0].style.color = "black";
+    }
+    if (e.key === "Delete" || e.key === "Backspace") {
+      setAmount("0.00");
+    }
+    if (
+      e.key === "Left" ||
+      e.key === "ArrowLeft" ||
+      e.key === "Right" ||
+      e.key === "ArrowRight" ||
+      e.key === "Up" ||
+      e.key === "ArrowUp" ||
+      e.key === "Down" ||
+      e.key === "ArrowDown"
+    ) {
+      e.preventDefault();
+    }
   };
 
   const handleBuy = () => {
@@ -109,12 +170,10 @@ function Home() {
 
       <Header />
 
-      <main className="px-8 sm:px-24 py-8 sm:py-16 bg-gray-2">
-        <section className="block sm:hidden mb-8 sm:mb-0">
+      <main className="px-8 md:px-56 py-8 sm:py-16 bg-gray-2">
+        <section className="block sm:hidden">
           {isConnected && (
-            <div className="grid grid-cols-2 gap-4 mr-8">
-              <ETHBalance />
-
+            <div className="grid grid-cols-1 gap-4 mr-8">
               <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
             </div>
           )}
@@ -138,17 +197,28 @@ function Home() {
           </h2>
         </div>
 
-        <div className="flex flex-col justify-center items-center mt-12">
-          <div className="flex justify-center items-center">
+        <div>
+          <div>
+            <span id={"enter-amount-text"}>ENTER AMOUNT</span>
             <Input
-              label="Kelp amount"
               value={amount}
+              onPaste={(e) => {
+                e.preventDefault();
+              }}
               hasLimit={limitPerAccount !== "0.0"}
               onChange={handleChange}
+              onClick={handleClick}
+              onTouch={handleTouch}
+              onKeyDown={handleKeyDown}
+              onKeyUp={handleKeyUp}
               handleMaxButton={handleMaxButton}
             />
-            <Button className="font-bold text-2xl ml-8" onClick={handleBuy}>
-              Buy
+            <ETHBalance />
+            <Button
+              className="center-items buy-kelp-btn font-bold text-2xl ml-8 px-5"
+              onClick={handleBuy}
+            >
+              Buy Kelp
             </Button>
           </div>
           {error && <p className="text-red text-lg">{error}</p>}

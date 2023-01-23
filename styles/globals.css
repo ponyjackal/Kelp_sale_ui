@@ -1,13 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css?family=Poppins:regular,bold,italic&subset=latin,latin-ext');
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -15,8 +18,165 @@ a {
   text-decoration: none;
 }
 
-* {
+button {
+  border: none !important;
+}
+
+html * {
+  font-family: \'Poppins\', sans-serif !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[value=\"0.00\"] {
+  width: 4ch;
+}
+
+main {
+  padding: 0px;
+  margin: 0px;
+}
+
+.btn-header {
+  vertical-align: baseline !important;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  border: none !important;
+}
+
+.buy-kelp-btn {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  width: 404px;
+  max-width: 60vw;
+  height: 56px;
+}
+
+.center-items {
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+
+.countdown-time-metric {
+  font-size: 16px !important;
+  font-weight: 500;
+  line-height: 24px !important;
+}
+
+.dropdown #dropdown-currencies {
+  margin-right: 20px;
+  background-color: #46d6a2;
+}
+
+.eth-balance-text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.events .image {
+  /* content: \"\"; */
+  position: absolute;
+  z-index: 2;
+  left: 3;
+  transform: translateX(60%);
+}
+
+.events .image1 {
+  /* content: \"\"; */
+  position: absolute;
+  z-index: 2;
+  left: 1;
+  transform: translateX(5%);
+  /* top: 0; */
+  /* transform: translateX(50%);
+   border-radius: 50%;
+   background: #fff;
+   border: 1px #ccc solid;
+   width: .8em;
+   height: .8em; */
+}
+
+.events li {
+  display: flex;
+  color: #999;
+}
+
+.events span {
+  position: relative;
+}
+
+.events span::before {
+  content: \"\";
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  height: 100%;
+  border-left: 2px #46d6a2 solid;
+  margin-left: -1px;
+}
+
+.events strong {
+  display: block;
+  font-weight: bolder;
+}
+
+.events time {
+  position: relative;
+  padding: 0 0.7em;
+}
+
+.events {
+  width: 100%;
+}
+
+.events,
+.events *::before,
+.events *::after {
   box-sizing: border-box;
+  font-family: arial;
+}
+
+.input-amount {
+  background: transparent;
+  width: 4ch;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+  text-align: center;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 55px;
+  line-height: 80px;
+  color: darkgray;
+  max-width: 80vw;
+}
+
+.input-amount:focus {
+  outline: none;
+}
+
+.kelp-token-logo {
+  display: inline-block;
+  margin-right: 5px;
+  height: 24px;
+  width: auto;
 }
 
 .progress-container .progress {
@@ -33,69 +193,71 @@ a {
   border-radius: 20px;
 }
 
-.events li {
-  display: flex;
-  color: #999;
+.py-8 {
+  padding-top: 0px !important;
 }
 
-.events time {
-  position: relative;
-  padding: 0 0.7em;
+.text-left {
+  font-size: 24px !important;
+  font-weight: 700;
 }
 
-.events .image1 {
-  /* content: ""; */
-  position: absolute;
-  z-index: 2;
-  left: 1;
-  transform: translateX(5%);
-  /* top: 0; */
-  /* transform: translateX(50%);
-   border-radius: 50%;
-   background: #fff;
-   border: 1px #ccc solid;
-   width: .8em;
-   height: .8em; */
+.text-right {
+  float: right;
+  font-size: 24px !important;
+  font-weight: 700;
 }
 
-.events .image {
-  /* content: ""; */
-  position: absolute;
-  z-index: 2;
-  left: 3;
-  transform: translateX(60%);
+.text-white {
+  color: white;
 }
 
-.events span {
-  /* padding: 0 0 1.5em 0.9em; */
-  position: relative;
+.toggle-btn {
+  background-color: #46d6a2 !important;
 }
 
-.events span::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  height: 100%;
-  border-left: 2px #46d6a2 solid;
-  margin-left: -1px;
+.token-balance {
+  margin-right: 20px;
 }
 
-.events strong {
+.token-balance-strong {
+  vertical-align: baseline !important;
+  border: none;
+  color: #46d6a2;
+}
+
+.token-balance-text {
+  font-weight: 600;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  background-color: white !important;
+  color: #46d6a2;
+  margin: 0 auto;
+  margin-bottom: 20px !important;
+}
+
+.tracking-widest {
+  font-size: 48px !important;
+  font-weight: 700 !important;
+}
+
+#connect-wallet {
+  background-color: #46d6a2 !important;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+#enter-amount-text {
   display: block;
-  font-weight: bolder;
-}
-
-.events {
-  width: 100%;
-}
-.events,
-.events *::before,
-.events *::after {
-  box-sizing: border-box;
-  font-family: arial;
-}
-
-.dropdown button {
-  color: #46d6a2 !important;
+  margin: 0 auto;
+  text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #cdcece;
 }

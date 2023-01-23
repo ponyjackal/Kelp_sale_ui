@@ -166,12 +166,12 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                 style={{ color: "#B0B0B0" }}
               >
                 You Receive{" "}
-                <p
+                <span
                   className="lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
                   style={{ color: "#2C2D2F" }}
                 >
                   {amount} Kelp
-                </p>
+                </span>
               </p>
             </li>
           </ul>

@@ -28,7 +28,7 @@ const CountDownRenderer: FunctionComponent<CountDownRendererProps> = ({
           <p className="md:text-4xl lg:text-4xl xs:text-xl xxs:text-xl xxxs:text-xl font-light tracking-widest">
             {days}
           </p>
-          <p className="text-gray-1 text-base xs:text-sm xxs:text-sm xxxs:text-sm xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2">
+          <p className="text-gray-1 text-base xs:text-sm xxs:text-sm xxxs:text-sm xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2 countdown-time-metric">
             DAYS
           </p>
         </div>
@@ -36,7 +36,7 @@ const CountDownRenderer: FunctionComponent<CountDownRendererProps> = ({
           <p className="md:text-4xl lg:text-4xl xs:text-xl xxs:text-xl xxxs:text-xl font-light tracking-widest">
             {hours}
           </p>
-          <p className="text-gray-1 text-base xs:text-sm xxs:text-sm xxxs:text-sm xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2">
+          <p className="text-gray-1 text-base xs:text-sm xxs:text-sm xxxs:text-sm xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2 countdown-time-metric">
             HOURS
           </p>
         </div>
@@ -44,7 +44,7 @@ const CountDownRenderer: FunctionComponent<CountDownRendererProps> = ({
           <p className="md:text-4xl lg:text-4xl xs:text-xl xxs:text-xl xxxs:text-xl font-light tracking-widest">
             {minutes}
           </p>
-          <p className="text-gray-1 text-base xs:text-sm xxs:text-sm xxxs:text-sm xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2">
+          <p className="text-gray-1 text-base xs:text-sm xxs:text-sm xxxs:text-sm xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2 countdown-time-metric">
             MINUTES
           </p>
         </div>
@@ -52,7 +52,7 @@ const CountDownRenderer: FunctionComponent<CountDownRendererProps> = ({
           <p className="md:text-4xl lg:text-4xl xs:text-xl xxs:text-xl xxxs:text-xl font-light tracking-widest">
             {seconds}
           </p>
-          <p className="text-gray-1 text-base xs:text-sm xxs:text-sm xxxs:text-sm xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2">
+          <p className="text-gray-1 text-base xs:text-sm xxs:text-sm xxxs:text-sm xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2 countdown-time-metric">
             SECONDS
           </p>
         </div>
