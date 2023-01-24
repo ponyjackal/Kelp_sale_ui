@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useWeb3Modal } from "@web3modal/react";
 import { useAccount, useEnsName } from "wagmi";
+import { disconnect } from "@wagmi/core";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "./Button";
 import { shortenHex } from "../util";
@@ -11,7 +12,7 @@ type DropDownToggleProps = {
 
 export default function HomePage({ className }: DropDownToggleProps) {
   const [loading, setLoading] = useState(false);
-  const { open, close } = useWeb3Modal();
+  const { open } = useWeb3Modal();
   const { address, isConnected } = useAccount();
 
   const { data, isError, isLoading } = useEnsName();
@@ -24,7 +25,7 @@ export default function HomePage({ className }: DropDownToggleProps) {
 
   const onClose = async () => {
     setLoading(true);
-    await close();
+    await disconnect();
     setLoading(false);
   };
 
