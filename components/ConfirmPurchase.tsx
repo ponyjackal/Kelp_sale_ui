@@ -8,7 +8,7 @@ import useBuyKelp from "../hooks/useBuyKelp";
 interface Props {
   show?: boolean;
   onHide: () => void;
-  amount: string;
+  kelpAmount: number;
   bnbAmount: string;
   kelpPrice: string;
   onSettle: (isSuccess: boolean) => void;
@@ -16,7 +16,7 @@ interface Props {
 
 const ConfirmPurchase: FunctionComponent<Props> = ({
   show,
-  amount,
+  kelpAmount,
   bnbAmount,
   kelpPrice,
   onHide,
@@ -170,7 +170,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                   className="lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
                   style={{ color: "#2C2D2F" }}
                 >
-                  {amount} Kelp
+                  {kelpAmount} Kelp
                 </span>
               </p>
             </li>

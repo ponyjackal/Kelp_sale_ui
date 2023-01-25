@@ -26,7 +26,7 @@ function Home() {
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
     useState<boolean>(false);
 
-  const [amount, setAmount] = useState<string>("0.00");
+  const [usdAmount, setUSDAmount] = useState<string>("0.00");
   const [error, setError] = useState<string>("");
 
   const { data: bnbPrice } = useBNBPrice();
@@ -35,18 +35,20 @@ function Home() {
     ? utils.formatEther(bnbPrice as BigNumber).slice(0, 6)
     : "0.0";
 
+  const kelpAmount = parseFloat(usdAmount) / parseFloat(kelpPrice);
+
   const bnbAmount = useMemo(() => {
-    if (!bnbPrice || !amount) {
+    if (!bnbPrice || kelpAmount <= 0.0) {
       return "0.0";
     }
 
     return utils.formatEther(
       utils
-        .parseEther(amount)
+        .parseEther("" + kelpAmount)
         .mul(utils.parseEther(kelpPrice))
         .div(bnbPrice as BigNumber)
     );
-  }, [bnbPrice, amount, kelpPrice]);
+  }, [bnbPrice, kelpAmount, kelpPrice]);
 
   const notifySuccess = () => {
     toast.success("You bought Kelp token successfully!", {
@@ -68,7 +70,7 @@ function Home() {
     } else {
       newValue = parseFloat(e.target.value) * 10;
     }
-    setAmount(parseFloat(newValue.toString()).toFixed(2));
+    setUSDAmount(parseFloat(newValue.toString()).toFixed(2));
   };
 
   const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
@@ -99,7 +101,7 @@ function Home() {
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.currentTarget.style.width = e.currentTarget.value.length + "ch";
-    setAmount(e.currentTarget.value);
+    setUSDAmount(e.currentTarget.value);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -110,7 +112,7 @@ function Home() {
       )[0].style.color = "black";
     }
     if (e.key === "Delete" || e.key === "Backspace") {
-      setAmount("0.00");
+      setUSDAmount("0.00");
     }
     if (
       e.key === "Left" ||
@@ -127,7 +129,7 @@ function Home() {
   };
 
   const handleBuy = () => {
-    if (!amount || parseFloat(amount) <= 0) {
+    if (!usdAmount || parseFloat(usdAmount) <= 0) {
       setError("Invalid Amount");
       return;
     }
@@ -139,7 +141,7 @@ function Home() {
 
     if (
       limitPerAccount !== "0.0" &&
-      parseFloat(amount) > parseFloat(limitPerAccount)
+      parseFloat(usdAmount) > parseFloat(limitPerAccount)
     ) {
       setError("Limit amount per account exceed");
       return;
@@ -149,7 +151,7 @@ function Home() {
   };
 
   const handleMaxButton = () => {
-    setAmount(limitPerAccount);
+    setUSDAmount(limitPerAccount);
   };
 
   const handleTx = (isSuccess: boolean) => {
@@ -201,7 +203,7 @@ function Home() {
           <div>
             <span id={"enter-amount-text"}>ENTER AMOUNT</span>
             <Input
-              value={amount}
+              value={usdAmount}
               onPaste={(e) => {
                 e.preventDefault();
               }}
@@ -228,7 +230,7 @@ function Home() {
             show={confirmPurchaseModal}
             onHide={() => setConfirmPurchaseModal(false)}
             bnbAmount={bnbAmount}
-            amount={amount}
+            kelpAmount={kelpAmount}
             kelpPrice={kelpPrice}
             onSettle={handleTx}
           />
