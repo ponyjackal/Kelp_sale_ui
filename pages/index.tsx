@@ -9,7 +9,6 @@ import TotalRaised from "../components/TotalRaised";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import ConfirmPurchase from "../components/ConfirmPurchase";
-import ETHBalance from "../components/ETHBalance";
 import TokenBalance from "../components/TokenBalance";
 import useBNBPrice from "../hooks/useBNBPrice";
 import useKelpPrice from "../hooks/useKelpPrice";
@@ -17,6 +16,7 @@ import useLimitPerAccount from "../hooks/useLimitPerAccount";
 import { KELP_TOKEN_ADDRESS } from "../utils/constants";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
+import PaymentMethod from "../components/PaymentMethod";
 
 function Home() {
   const { address, isConnected } = useAccount();
@@ -164,7 +164,7 @@ function Home() {
   };
 
   return (
-    <div className="h-screen bg-gray-2">
+    <div className="bg-gray-2" style={{ overflowY: "scroll", height: "100vh" }}>
       <Head>
         <title>KELP Private Sale</title>
         <link rel="icon" href="/favicon.ico" />
@@ -172,69 +172,88 @@ function Home() {
 
       <Header />
 
-      <main className="px-8 md:px-56 py-8 sm:py-16 bg-gray-2">
-        <section className="block sm:hidden">
-          {isConnected && (
-            <div className="grid grid-cols-1 gap-4 mr-8">
-              <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
-            </div>
-          )}
-        </section>
-        <section>
-          <h1 className="text-gray-1 text-left font-bold leading-6 text-2xl md:text-3xl">
-            PRIVATE SALE
-          </h1>
-        </section>
+      <main className="container bg-white rounded-xl p-0">
+        <div className="md:p-12 xxxs:p-5" style={{ marginBottom: "50px" }}>
+          <section className="block sm:hidden">
+            {isConnected && (
+              <div className="grid grid-cols-1 gap-4 mr-8">
+                <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
+              </div>
+            )}
+          </section>
+          <section>
+            <h1 className="text-gray-1 text-center font-bold leading-6 text-3xl md:text-3xl xs:text-xl xxs:text-xl xxxs:text-xl">
+              PRIVATE SALE
+            </h1>
+          </section>
 
-        <Countdown date={"2023-01-31T14:48:00.000+09:00"} />
+          <Countdown date={"2023-01-31T14:48:00.000+09:00"} />
 
-        <TotalRaised />
+          <TotalRaised />
 
-        <div className="flex justify-center items-center text-center mt-24">
-          <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl">
-            Kelp Price: ${kelpPrice}
-          </h2>
-          <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl ml-4">
-            BNB Price: ${bnbPriceString}
-          </h2>
-        </div>
+          <PaymentMethod />
 
-        <div>
+          {/* <div className="flex justify-center items-center text-center mt-24">
+            <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl">
+              Kelp Price: ${kelpPrice}
+            </h2>
+            <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl ml-4">
+              BNB Price: ${bnbPriceString}
+            </h2>
+          </div> */}
+
           <div>
-            <span id={"enter-amount-text"}>ENTER AMOUNT</span>
-            <Input
-              value={usdAmount}
-              onPaste={(e) => {
-                e.preventDefault();
-              }}
-              hasLimit={limitPerAccount !== "0.0"}
-              onChange={handleChange}
-              onClick={handleClick}
-              onTouch={handleTouch}
-              onKeyDown={handleKeyDown}
-              onKeyUp={handleKeyUp}
-              handleMaxButton={handleMaxButton}
-            />
-            <ETHBalance />
+            <div className="text-left my-6">
+              {/* <span className="text-left" id={"enter-amount-text"}>ENTER AMOUNT</span> */}
+              <span className="text-xl xs:text-lg xxs:text-lg xxxs:text-lg font-normal text-gray-1">
+                ENTER AMOUNT
+              </span>
+              <div className="flex flex-wrap xxs:justify-between xxxs:justify-center xxxs:mb-2 xxs:mb-0 items-center">
+                <div>
+                  <Input
+                    value={usdAmount}
+                    onPaste={(e) => {
+                      e.preventDefault();
+                    }}
+                    hasLimit={limitPerAccount !== "0.0"}
+                    onChange={handleChange}
+                    onClick={handleClick}
+                    onTouch={handleTouch}
+                    onKeyDown={handleKeyDown}
+                    onKeyUp={handleKeyUp}
+                    handleMaxButton={handleMaxButton}
+                  />
+                </div>
+                <div className="flex">
+                  <p className="me-4 text-gray-1 mb-0 font-normal text-base">
+                    MIN
+                  </p>
+                  <p className="me-4 text-gray-1 mb-0 font-normal text-base">
+                    HALF
+                  </p>
+                  <p className="text-gray-1 mb-0 font-normal text-base">ALL</p>
+                </div>
+              </div>
+            </div>
             <Button
-              className="center-items buy-kelp-btn font-bold text-2xl ml-8 px-5"
+              className="center-items buy-kelp-btn font-bold text-2xl px-5"
               onClick={handleBuy}
             >
               Buy Kelp
             </Button>
+            {error && <p className="text-red text-lg">{error}</p>}
           </div>
-          {error && <p className="text-red text-lg">{error}</p>}
+          {confirmPurchaseModal && (
+            <ConfirmPurchase
+              show={confirmPurchaseModal}
+              onHide={() => setConfirmPurchaseModal(false)}
+              bnbAmount={bnbAmount}
+              kelpAmount={kelpAmount}
+              kelpPrice={kelpPrice}
+              onSettle={handleTx}
+            />
+          )}
         </div>
-        {confirmPurchaseModal && (
-          <ConfirmPurchase
-            show={confirmPurchaseModal}
-            onHide={() => setConfirmPurchaseModal(false)}
-            bnbAmount={bnbAmount}
-            kelpAmount={kelpAmount}
-            kelpPrice={kelpPrice}
-            onSettle={handleTx}
-          />
-        )}
       </main>
       <ToastContainer />
     </div>

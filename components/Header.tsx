@@ -9,8 +9,6 @@ import { KELP_TOKEN_ADDRESS } from "../utils/constants";
 
 const Header = () => {
   const { address, isConnected } = useAccount();
-  const options = ["BNB", "BUSD"];
-  const [selectedCurrency, setSelectedCurrency] = useState<string>(options[0]);
   return (
     <header className="px-8 py-4 bg-gray-2">
       <nav className="flex justify-between items-center">
@@ -23,24 +21,6 @@ const Header = () => {
             <div className="hidden sm:grid grid-cols-1 gap-4 token-balance btn-header">
               <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
             </div>
-          )}
-          {isConnected && (
-            <Dropdown>
-              <Dropdown.Toggle
-                className="toggle-btn text-green-1 font-helvetica text-lg py-2 rounded-lg btn-header"
-                id="dropdown-currencies"
-              >
-                {selectedCurrency}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => setSelectedCurrency(options[0])}>
-                  {"BNB"}
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSelectedCurrency(options[1])}>
-                  {"BUSD"}
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
           )}
           <Account className="btn-header" />
         </section>

@@ -49,7 +49,7 @@ export default function HomePage({ className }: DropDownToggleProps) {
       ) : (
         <Button
           id="connect-wallet"
-          className="btn"
+          className="bg-green-1 hover:bg-green-2 text-white font-helvetica text-lg py-2 xxxs:px-3 xxs:px-11 border-2 border-secondary rounded-lg"
           variant="primary"
           onClick={onOpen}
           disabled={loading}
