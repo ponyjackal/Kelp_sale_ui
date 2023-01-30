@@ -44,14 +44,14 @@ const TotalRaised = () => {
       : 0;
 
   return (
-    <div className="text-left mt-10">
-      <p className="text-gray-1 text-sm sm:text-lg mb-1">TOTAL RAISED</p>
+    <div className="text-left mt-8">
+      <p className="text-gray-1 text-sm sm:text-lg mb-2 font-normal">TOTAL RAISED</p>
 
       <div className="relative progress-container">
         <ProgressBar now={percentage} />
       </div>
       <p className="text-green-1 inline-block font-bold text-left text-lg sm:text-2xl mb-2.5 md:mb-6">
-        $ {totalRaised ?? 0}
+        ${totalRaised ?? 0}
       </p>
       <p className="text-green-1 inline-block font-bold text-lg sm:text-2xl mb-2.5 md:mb-6 inline-block text-right">
         ${totalLimit}

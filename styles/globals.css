@@ -61,8 +61,7 @@ main {
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
-  width: 404px;
-  max-width: 60vw;
+  width: 100%;
   height: 56px;
 }
 
@@ -73,7 +72,6 @@ main {
 }
 
 .countdown-time-metric {
-  font-size: 16px !important;
   font-weight: 500;
   line-height: 24px !important;
 }
@@ -164,7 +162,6 @@ main {
   font-weight: 600;
   font-size: 55px;
   line-height: 80px;
-  color: darkgray;
   max-width: 80vw;
 }
 
@@ -221,9 +218,11 @@ main {
 }
 
 .token-balance-strong {
-  vertical-align: baseline !important;
+  vertical-align: middle !important;
   border: none;
   color: #46d6a2;
+  font-size: 20px;
+  line-height: 24px;
 }
 
 .token-balance-text {
@@ -248,8 +247,11 @@ main {
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
-  padding-left: 45px;
-  padding-right: 45px;
+  color: #FFF;
+}
+
+#connect-wallet:hover{
+  background-color: #36c692 !important;
 }
 
 #enter-amount-text {
