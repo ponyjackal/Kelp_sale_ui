@@ -1,8 +1,15 @@
 import Image from "next/image";
 import React, { useState } from "react";
+import { useAccount, useBalance } from "wagmi";
+import { parseBalance } from "../util";
 
 const PaymentMethod = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const { address, isConnected } = useAccount();
+  const { data, isError, isLoading } = useBalance({
+    address,
+    chainId: 56,
+  });
 
   const white_color = "#FFFFFF";
 
@@ -45,7 +52,7 @@ const PaymentMethod = () => {
                     selectedOption === "BNB" && "text-white"
                   } md:text-2xl xxxs:text-lg font-bold m-0`}
                 >
-                  0.0000
+                  {parseBalance(data?.value ?? 0)}
                 </h2>
                 <p
                   className={`${
@@ -86,9 +93,9 @@ const PaymentMethod = () => {
                 <h2
                   className={`${
                     selectedOption === "BUSD" && "text-white"
-                  } text-2xl xs:text-lg xxs:text-lg xxxs:text-lg font-bold m-0`}
+                  } md:text-2xl xs:text-lg xxs:text-lg xxxs:text-lg font-bold m-0`}
                 >
-                  0.00
+                  0.000
                 </h2>
                 <p
                   className={`${

@@ -9,7 +9,6 @@ import TotalRaised from "../components/TotalRaised";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import ConfirmPurchase from "../components/ConfirmPurchase";
-import ETHBalance from "../components/ETHBalance";
 import TokenBalance from "../components/TokenBalance";
 import useBNBPrice from "../hooks/useBNBPrice";
 import useKelpPrice from "../hooks/useKelpPrice";
@@ -236,7 +235,6 @@ function Home() {
                 </div>
               </div>
             </div>
-            <ETHBalance />
             <Button
               className="center-items buy-kelp-btn font-bold text-2xl px-5"
               onClick={handleBuy}
