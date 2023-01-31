@@ -280,6 +280,7 @@ main {
 #connect-wallet {
   background-color: #46d6a2 !important;
   font-weight: 700;
+  height: 56px;
   color: #FFF;
 }
 
