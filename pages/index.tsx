@@ -173,25 +173,20 @@ function Home() {
       <Header />
 
       <main className="container bg-white rounded-xl p-0">
-        <div className="md:p-12 xxxs:p-5" style={{ marginBottom: "50px" }}>
-          <section className="block sm:hidden">
-            {isConnected && (
-              <div className="grid grid-cols-1 gap-4 mr-8">
-                <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
-              </div>
-            )}
-          </section>
+        <div className="md:px-10 md:py-12 xxxs:p-5 container-div" style={{ marginBottom: "50px" }}>
           <section>
-            <h1 className="text-gray-1 text-center font-bold leading-6 text-3xl md:text-3xl xs:text-xl xxs:text-xl xxxs:text-xl">
+            <h1 className="text-gray-1 text-center heading-text">
               PRIVATE SALE
             </h1>
           </section>
 
-          <Countdown date={"2023-01-31T14:48:00.000+09:00"} />
+          <Countdown date={"2023-03-01T14:48:00.000+09:00"} />
 
           <TotalRaised />
 
-          <PaymentMethod />
+          {isConnected && (
+            <PaymentMethod />
+          )}
 
           {/* <div className="flex justify-center items-center text-center mt-24">
             <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl">
@@ -225,18 +220,18 @@ function Home() {
                   />
                 </div>
                 <div className="flex">
-                  <p className="me-4 text-gray-1 mb-0 font-normal text-base">
+                  <p className="me-4 text-gray-1 mb-0 base-options-text">
                     MIN
                   </p>
-                  <p className="me-4 text-gray-1 mb-0 font-normal text-base">
+                  <p className="me-4 text-gray-1 mb-0 base-options-text">
                     HALF
                   </p>
-                  <p className="text-gray-1 mb-0 font-normal text-base">ALL</p>
+                  <p className="text-gray-1 mb-0 base-options-text">ALL</p>
                 </div>
               </div>
             </div>
             <Button
-              className="center-items buy-kelp-btn font-bold text-2xl px-5"
+              className="center-items buy-kelp-btn"
               onClick={handleBuy}
             >
               Buy Kelp

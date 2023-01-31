@@ -24,8 +24,8 @@ const PaymentMethod = () => {
           <button onClick={() => setSelectedOption("BNB")}>
             <div
               className={`${
-                selectedOption === "BNB" ? "toggle-btn" : "bg-gray-2"
-              } p-4 flex justify-between items-center rounded-lg`}
+                selectedOption === "BNB" ? "toggle-btn" : ""
+              } payment-option-card p-3 flex justify-between items-center rounded-lg`}
             >
               <div>
                 <Image src={"/BNB.png"} className="xxxs:w-8 md:w-10" width={40} height={40} alt="" />
@@ -67,8 +67,8 @@ const PaymentMethod = () => {
           <button onClick={() => setSelectedOption("BUSD")}>
             <div
               className={`${
-                selectedOption === "BUSD" ? "toggle-btn" : "bg-gray-2"
-              } p-4 flex justify-between items-center rounded-lg`}
+                selectedOption === "BUSD" ? "toggle-btn" : ""
+              } payment-option-card p-3 flex justify-between items-center rounded-lg`}
             >
               <div>
                 <Image src={"/BUSD.png"} className="xxxs:w-9 md:w-12" width={40} height={40} alt="" />

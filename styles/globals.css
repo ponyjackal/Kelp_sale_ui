@@ -23,7 +23,7 @@ button {
 }
 
 html * {
-  font-family: \'Poppins\', sans-serif !important;
+  font-family: 'Poppins', sans-serif !important;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -38,7 +38,7 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-input[value=\"0.00\"] {
+input[value="0.00"] {
   width: 4ch;
 }
 
@@ -53,16 +53,26 @@ main {
   font-weight: 700 !important;
   font-size: 16px !important;
   line-height: 24px !important;
+  height: 56px;
   border: none !important;
 }
 
 .buy-kelp-btn {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
+  font-size: 20px;
+  font-weight: 600;
   line-height: 24px;
-  width: 100%;
-  height: 56px;
+  letter-spacing: 0px;
+  text-align: center;
+  width: 700px;
+  max-width: 100%;
+}
+
+.base-options-text {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
 }
 
 .center-items {
@@ -72,8 +82,23 @@ main {
 }
 
 .countdown-time-metric {
+  font-size: 16px;
   font-weight: 500;
-  line-height: 24px !important;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.countdown-value-text {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: 15px;
+  text-align: right;
+}
+
+.container {
+  border-radius: 10px;
 }
 
 .dropdown #dropdown-currencies {
@@ -101,13 +126,6 @@ main {
   z-index: 2;
   left: 1;
   transform: translateX(5%);
-  /* top: 0; */
-  /* transform: translateX(50%);
-   border-radius: 50%;
-   background: #fff;
-   border: 1px #ccc solid;
-   width: .8em;
-   height: .8em; */
 }
 
 .events li {
@@ -151,22 +169,23 @@ main {
 }
 
 .input-amount {
-  background: transparent;
   width: 4ch;
-  border-top-style: hidden;
-  border-right-style: hidden;
-  border-left-style: hidden;
-  border-bottom-style: groove;
-  text-align: center;
-  font-style: normal;
+  font-size: 50px;
   font-weight: 600;
-  font-size: 55px;
-  line-height: 80px;
-  max-width: 80vw;
+  line-height: 75px;
+  letter-spacing: 0px;
+  text-align: left;
 }
 
 .input-amount:focus {
   outline: none;
+}
+
+.total-raised-text {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0px;
 }
 
 .kelp-token-logo {
@@ -176,10 +195,30 @@ main {
   width: auto;
 }
 
+.ends-in-text {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.payment-option-card {
+  height: 100px;
+  width: 330px;
+  max-width: 100%;
+  border-radius: 10px;
+  border: 2px solid #F1F1F0;
+}
+
+.container {
+  max-width: 800px !important;
+}
+
 .progress-container .progress {
-  height: 10px;
+  height: 15px;
   background-color: #cdcece !important;
-  border-radius: 20px;
+  border-radius: 7.5px;
 }
 
 .progress-container .progress-bar {
@@ -194,17 +233,6 @@ main {
   padding-top: 0px !important;
 }
 
-.text-left {
-  font-size: 24px !important;
-  font-weight: 700;
-}
-
-.text-right {
-  float: right;
-  font-size: 24px !important;
-  font-weight: 700;
-}
-
 .text-white {
   color: white;
 }
@@ -215,6 +243,10 @@ main {
 
 .token-balance {
   margin-right: 20px;
+  margin-left: 20px;
+  width: max-content;
+  max-width: 100%;
+  border-radius: 10px;
 }
 
 .token-balance-strong {
@@ -222,10 +254,14 @@ main {
   border: none;
   color: #46d6a2;
   font-size: 20px;
+  font-weight: 600;
   line-height: 24px;
+  letter-spacing: 0px;
+  text-align: right;
 }
 
 .token-balance-text {
+  pointer-events: none;
   font-weight: 600;
   font-style: normal;
   font-weight: 700 !important;
@@ -234,7 +270,6 @@ main {
   background-color: white !important;
   color: #46d6a2;
   margin: 0 auto;
-  margin-bottom: 20px !important;
 }
 
 .tracking-widest {
@@ -245,9 +280,14 @@ main {
 #connect-wallet {
   background-color: #46d6a2 !important;
   font-weight: 700;
-  font-size: 16px;
-  line-height: 24px;
   color: #FFF;
+}
+
+.heading-text {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 48px;
+  letter-spacing: 0px;
 }
 
 #connect-wallet:hover{
