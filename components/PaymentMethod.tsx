@@ -16,7 +16,7 @@ const PaymentMethod = () => {
   return (
     <>
       <div>
-        <p className="text-gray-1 text-xl xs:text-lg xxs:text-lg xxxs:text-lg font-normal">
+        <p className="text-gray-1 sub-heading-text">
           PAYMENT METHOD
         </p>
         <div className="grid grid-cols-2 lg:gap-12 md:gap-7 xs:gap-4 xxs:gap-4 xxxs:gap-4 md:grid-cols-2 xxxs:grid-cols-1">

@@ -24,7 +24,7 @@ const CountDownRenderer: FunctionComponent<CountDownRendererProps> = ({
   return (
     <>
       <div>
-        <p className="text-gray-1 ends-in-text xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2 m-0">
+        <p className="text-gray-1 sub-heading-text xs:mb-1 xxs:mb-1 xxxs:mb-1 md:mb-2 lg:mb-2 m-0">
           ENDS IN
         </p>
         <div className="flex justify-between md:mt-6 lg:mt-6">

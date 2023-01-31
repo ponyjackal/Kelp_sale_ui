@@ -200,7 +200,7 @@ function Home() {
           <div>
             <div className="text-left my-6">
               {/* <span className="text-left" id={"enter-amount-text"}>ENTER AMOUNT</span> */}
-              <span className="text-xl xs:text-lg xxs:text-lg xxxs:text-lg font-normal text-gray-1">
+              <span className="sub-heading-text text-gray-1">
                 ENTER AMOUNT
               </span>
               <div className="flex flex-wrap xxs:justify-between xxxs:justify-center xxxs:mb-2 xxs:mb-0 items-center">

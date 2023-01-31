@@ -45,7 +45,7 @@ const TotalRaised = () => {
 
   return (
     <div className="text-left mt-8">
-      <p className="text-gray-1 text-sm sm:text-lg mb-2 font-normal">TOTAL RAISED</p>
+      <p className="text-gray-1 sub-heading-text mb-2">TOTAL RAISED</p>
 
       <div className="relative progress-container">
         <ProgressBar now={percentage} />
