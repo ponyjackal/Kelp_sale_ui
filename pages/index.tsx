@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Head from "next/head";
-import { useAccount } from "wagmi";
-import { BigNumber, utils } from "ethers";
+import { useAccount, useBalance } from "wagmi";
+import { BigNumber, FixedNumber, utils } from "ethers";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
@@ -17,6 +17,7 @@ import { KELP_TOKEN_ADDRESS } from "../utils/constants";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import PaymentMethod from "../components/PaymentMethod";
+import { parseBalance } from "../util";
 
 function Home() {
   const { address, isConnected } = useAccount();
@@ -30,6 +31,10 @@ function Home() {
   const [error, setError] = useState<string>("");
 
   const { data: bnbPrice } = useBNBPrice();
+  const { data, isError, isLoading } = useBalance({
+    address,
+    chainId: 56,
+  });
 
   const bnbPriceString = bnbPrice
     ? utils.formatEther(bnbPrice as BigNumber).slice(0, 6)
@@ -128,6 +133,46 @@ function Home() {
     }
   };
 
+  const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
+  function simulateMouseClick(element: HTMLElement) {
+    mouseClickEvents.forEach(mouseEventType =>
+      element.dispatchEvent(
+        new MouseEvent(mouseEventType, {
+          view: window,
+          bubbles: true,
+          cancelable: false
+        })
+      )
+    );
+  }
+
+  useEffect(() => {
+    let inputElement = document.getElementById('input-amount-value');
+    if (inputElement)
+      simulateMouseClick(inputElement);
+  }, [usdAmount]);
+
+  const handleMin = () => {
+    let minValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(parseBalance((data?.value ?? 0), 18, 6))).mulUnsafe(FixedNumber.from("0.25")).round(2)._value;
+    if (minValue.charAt(minValue.length - 2) === '.')
+      minValue = minValue.concat("0");
+    setUSDAmount(minValue);
+  }
+
+  const handleHalf = () => {
+    let halfValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(parseBalance((data?.value ?? 0), 18, 6))).mulUnsafe(FixedNumber.from("0.50")).round(2)._value;
+    if (halfValue.charAt(halfValue.length - 2) === '.')
+      halfValue = halfValue.concat("0");
+    setUSDAmount(halfValue);
+  }
+
+  const handleMax = () => {
+    let maxValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(parseBalance((data?.value ?? 0), 18, 6))).round(2)._value;
+    if (maxValue.charAt(maxValue.length - 2) === '.')
+      maxValue = maxValue.concat("0");
+    setUSDAmount(maxValue);
+  }
+
   const handleBuy = () => {
     if (!usdAmount || parseFloat(usdAmount) <= 0) {
       setError("Invalid Amount");
@@ -148,10 +193,6 @@ function Home() {
     }
 
     setConfirmPurchaseModal(true);
-  };
-
-  const handleMaxButton = () => {
-    setUSDAmount(limitPerAccount);
   };
 
   const handleTx = (isSuccess: boolean) => {
@@ -210,24 +251,24 @@ function Home() {
                     onPaste={(e) => {
                       e.preventDefault();
                     }}
-                    hasLimit={limitPerAccount !== "0.0"}
                     onChange={handleChange}
                     onClick={handleClick}
                     onTouch={handleTouch}
                     onKeyDown={handleKeyDown}
                     onKeyUp={handleKeyUp}
-                    handleMaxButton={handleMaxButton}
                   />
                 </div>
-                <div className="flex">
-                  <p className="me-4 text-gray-1 mb-0 base-options-text">
-                    MIN
-                  </p>
-                  <p className="me-4 text-gray-1 mb-0 base-options-text">
-                    HALF
-                  </p>
-                  <p className="text-gray-1 mb-0 base-options-text">ALL</p>
-                </div>
+                {isConnected && (
+                  <div className="flex">
+                    <p className="me-4 text-gray-1 mb-0 base-options-text" onClick={handleMin}>
+                      MIN
+                    </p>
+                    <p className="me-4 text-gray-1 mb-0 base-options-text" onClick={handleHalf}>
+                      HALF
+                    </p>
+                    <p className="text-gray-1 mb-0 base-options-text" onClick={handleMax}>ALL</p>
+                  </div>
+                )}
               </div>
             </div>
             <Button

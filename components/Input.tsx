@@ -9,25 +9,22 @@ type InputProps = {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onPaste?: (e: React.ClipboardEvent<HTMLInputElement>) => void;
   onTouch?: (e: React.TouchEvent<HTMLInputElement>) => void;
-  hasLimit: boolean;
-  handleMaxButton?: () => void;
 };
 
 const Input = ({
   value,
-  hasLimit,
   onChange,
   onKeyUp,
   onKeyDown,
   onTouch,
   onPaste,
   onClick,
-  handleMaxButton,
 }: InputProps) => {
   return (
     <div className="relative flex center-items">
       <span className="input-amount">$</span>
       <input
+        id="input-amount-value"
         className="input-amount"
         step="0.01"
         pattern="^\d+(\.\d{1,2})?$"
@@ -42,14 +39,6 @@ const Input = ({
         onKeyUp={onKeyUp}
         onKeyDown={onKeyDown}
       />
-      {hasLimit && (
-        <Button
-          className="absolute top-9 right-10 bg-blue-500 text-sm px-1 py-1 text-white rounded"
-          onClick={handleMaxButton}
-        >
-          Max
-        </Button>
-      )}
     </div>
   );
 };

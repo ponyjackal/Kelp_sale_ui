@@ -2,6 +2,8 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useAccount, useBalance } from "wagmi";
 import { parseBalance } from "../util";
+import useBNBPrice from "../hooks/useBNBPrice";
+import { BigNumber, FixedNumber, utils } from "ethers";
 
 const PaymentMethod = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
@@ -10,7 +12,7 @@ const PaymentMethod = () => {
     address,
     chainId: 56,
   });
-
+  const { data: bnbPrice } = useBNBPrice();
   const white_color = "#FFFFFF";
 
   return (
@@ -59,7 +61,7 @@ const PaymentMethod = () => {
                     selectedOption === "BNB" ? "text-white" : "text-gray-1"
                   } m-0 text-xs`}
                 >
-                  $0.00
+                  ${FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(parseBalance((data?.value ?? 0), 18, 6))).round(2)._value}
                 </p>
               </div>
             </div>
