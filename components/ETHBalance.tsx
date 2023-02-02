@@ -1,5 +1,4 @@
 import { useAccount, useBalance } from "wagmi";
-import { parseBalance } from "../util";
 
 const ETHBalance = () => {
   const { address, isConnected } = useAccount();

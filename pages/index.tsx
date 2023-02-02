@@ -43,7 +43,7 @@ function Home() {
   const kelpAmount = parseFloat(usdAmount) / parseFloat(kelpPrice);
 
   const bnbAmount = useMemo(() => {
-    if (!bnbPrice || kelpAmount <= 0.0) {
+    if (!bnbPrice || kelpAmount <= 0.0 || Number.isNaN(kelpAmount)) {
       return "0.0";
     }
 
@@ -153,21 +153,21 @@ function Home() {
   }, [usdAmount]);
 
   const handleMin = () => {
-    let minValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).mulUnsafe(FixedNumber.from("0.25")).round(3)._value.slice(0, -1);
+    let minValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber ?? "0"), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).mulUnsafe(FixedNumber.from("0.25")).round(3)._value.slice(0, -1);
     if (minValue.charAt(minValue.length - 2) === '.')
       minValue = minValue.concat("0");
     setUSDAmount(minValue);
   }
 
   const handleHalf = () => {
-    let halfValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).mulUnsafe(FixedNumber.from("0.50")).round(3)._value.slice(0, -1);
+    let halfValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber ?? "0"), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).mulUnsafe(FixedNumber.from("0.50")).round(3)._value.slice(0, -1);
     if (halfValue.charAt(halfValue.length - 2) === '.')
       halfValue = halfValue.concat("0");
     setUSDAmount(halfValue);
   }
 
   const handleMax = () => {
-    let maxValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).round(3)._value.slice(0, -1);
+    let maxValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber ?? "0"), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).round(3)._value.slice(0, -1);
     if (maxValue.charAt(maxValue.length - 2) === '.')
       maxValue = maxValue.concat("0");
     setUSDAmount(maxValue);

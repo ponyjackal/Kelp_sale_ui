@@ -1,5 +1,4 @@
 import { useAccount, useBalance } from "wagmi";
-import { parseBalance } from "../util";
 import Image from "next/image";
 import tokenLogo from "../public/token-logo.png";
 

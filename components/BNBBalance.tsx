@@ -1,5 +1,4 @@
 import { useAccount, useBalance } from "wagmi";
-import { parseBalance } from "../util";
 
 const BNBBalance = () => {
   const { address, isConnected } = useAccount();
