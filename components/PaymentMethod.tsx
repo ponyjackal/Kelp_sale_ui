@@ -57,7 +57,7 @@ const PaymentMethod = () => {
                   className={`${selectedOption === "BNB" ? "text-white" : "text-gray-1"
                     } m-0 text-xs`}
                 >
-                  ${FixedNumber.from(parseBalance((bnbPrice as BigNumber ?? "0"), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).round(3)._value.slice(0, -1)}
+                  ${FixedNumber.from(parseBalance((bnbPrice as BigNumber ?? "0"), 18, 8)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).round(3)._value.slice(0, -1)}
                 </p>
               </div>
             </div>

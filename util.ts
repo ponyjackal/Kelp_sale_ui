@@ -10,5 +10,5 @@ export function shortenHex(hex: string, length = 4) {
 export const parseBalance = (
   value: BigNumberish,
   decimals = 18,
-  decimalsToDisplay = 6
+  decimalsToDisplay = 8
 ) => parseFloat(formatUnits(value, decimals)).toFixed(decimalsToDisplay);
