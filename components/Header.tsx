@@ -16,9 +16,9 @@ const Header = () => {
           <Image src={"/kelp.png"} width={82} height={40} alt="logo" />
         </Link>
 
-        <section className="flex justify-center items-baseline">
+        <section className="flex justify-center items-center">
           {isConnected && (
-            <div className="hidden sm:grid grid-cols-1 gap-4 token-balance btn-header">
+            <div className="token-balance">
               <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
             </div>
           )}

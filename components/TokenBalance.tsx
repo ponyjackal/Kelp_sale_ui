@@ -17,16 +17,16 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   });
 
   return (
-    <p className="token-balance-text text-green-1 font-helvetica text-lg py-2 rounded-lg btn-header btn">
+    <button type="button" className="token-balance-text text-green-1 btn-header btn">
       <Image
         className="kelp-token-logo"
         src={tokenLogo}
         alt={data?.symbol || "tKELP"}
       ></Image>
       <strong className="token-balance-strong">
-        {data ? parseBalance(data?.value ?? 0) : 0}
+        {data ? (data?.formatted ?? "0") : 0}
       </strong>
-    </p>
+    </button>
   );
 };
 

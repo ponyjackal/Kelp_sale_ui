@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Head from "next/head";
-import { useAccount } from "wagmi";
-import { BigNumber, utils } from "ethers";
+import { useAccount, useBalance } from "wagmi";
+import { BigNumber, FixedNumber, utils } from "ethers";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
@@ -17,6 +17,7 @@ import { KELP_TOKEN_ADDRESS } from "../utils/constants";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import PaymentMethod from "../components/PaymentMethod";
+import { parseBalance } from "../util";
 
 function Home() {
   const { address, isConnected } = useAccount();
@@ -30,6 +31,10 @@ function Home() {
   const [error, setError] = useState<string>("");
 
   const { data: bnbPrice } = useBNBPrice();
+  const { data, isError, isLoading } = useBalance({
+    address,
+    chainId: 56,
+  });
 
   const bnbPriceString = bnbPrice
     ? utils.formatEther(bnbPrice as BigNumber).slice(0, 6)
@@ -128,6 +133,46 @@ function Home() {
     }
   };
 
+  const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
+  function simulateMouseClick(element: HTMLElement) {
+    mouseClickEvents.forEach(mouseEventType =>
+      element.dispatchEvent(
+        new MouseEvent(mouseEventType, {
+          view: window,
+          bubbles: true,
+          cancelable: false
+        })
+      )
+    );
+  }
+
+  useEffect(() => {
+    let inputElement = document.getElementById('input-amount-value');
+    if (inputElement)
+      simulateMouseClick(inputElement);
+  }, [usdAmount]);
+
+  const handleMin = () => {
+    let minValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).mulUnsafe(FixedNumber.from("0.25")).round(3)._value.slice(0, -1);
+    if (minValue.charAt(minValue.length - 2) === '.')
+      minValue = minValue.concat("0");
+    setUSDAmount(minValue);
+  }
+
+  const handleHalf = () => {
+    let halfValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).mulUnsafe(FixedNumber.from("0.50")).round(3)._value.slice(0, -1);
+    if (halfValue.charAt(halfValue.length - 2) === '.')
+      halfValue = halfValue.concat("0");
+    setUSDAmount(halfValue);
+  }
+
+  const handleMax = () => {
+    let maxValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber), 18, 6)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).round(3)._value.slice(0, -1);
+    if (maxValue.charAt(maxValue.length - 2) === '.')
+      maxValue = maxValue.concat("0");
+    setUSDAmount(maxValue);
+  }
+
   const handleBuy = () => {
     if (!usdAmount || parseFloat(usdAmount) <= 0) {
       setError("Invalid Amount");
@@ -150,10 +195,6 @@ function Home() {
     setConfirmPurchaseModal(true);
   };
 
-  const handleMaxButton = () => {
-    setUSDAmount(limitPerAccount);
-  };
-
   const handleTx = (isSuccess: boolean) => {
     if (isSuccess) {
       notifySuccess();
@@ -173,25 +214,20 @@ function Home() {
       <Header />
 
       <main className="container bg-white rounded-xl p-0">
-        <div className="md:p-12 xxxs:p-5" style={{ marginBottom: "50px" }}>
-          <section className="block sm:hidden">
-            {isConnected && (
-              <div className="grid grid-cols-1 gap-4 mr-8">
-                <TokenBalance tokenAddress={KELP_TOKEN_ADDRESS} />
-              </div>
-            )}
-          </section>
+        <div className="md:px-10 md:py-12 xxxs:p-5 container-div" style={{ marginBottom: "50px" }}>
           <section>
-            <h1 className="text-gray-1 text-center font-bold leading-6 text-3xl md:text-3xl xs:text-xl xxs:text-xl xxxs:text-xl">
+            <h1 className="text-gray-1 text-center heading-text">
               PRIVATE SALE
             </h1>
           </section>
 
-          <Countdown date={"2023-01-31T14:48:00.000+09:00"} />
+          <Countdown date={"2023-03-01T14:48:00.000+09:00"} />
 
           <TotalRaised />
 
-          <PaymentMethod />
+          {isConnected && (
+            <PaymentMethod />
+          )}
 
           {/* <div className="flex justify-center items-center text-center mt-24">
             <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl">
@@ -205,7 +241,7 @@ function Home() {
           <div>
             <div className="text-left my-6">
               {/* <span className="text-left" id={"enter-amount-text"}>ENTER AMOUNT</span> */}
-              <span className="text-xl xs:text-lg xxs:text-lg xxxs:text-lg font-normal text-gray-1">
+              <span className="sub-heading-text text-gray-1">
                 ENTER AMOUNT
               </span>
               <div className="flex flex-wrap xxs:justify-between xxxs:justify-center xxxs:mb-2 xxs:mb-0 items-center">
@@ -215,28 +251,28 @@ function Home() {
                     onPaste={(e) => {
                       e.preventDefault();
                     }}
-                    hasLimit={limitPerAccount !== "0.0"}
                     onChange={handleChange}
                     onClick={handleClick}
                     onTouch={handleTouch}
                     onKeyDown={handleKeyDown}
                     onKeyUp={handleKeyUp}
-                    handleMaxButton={handleMaxButton}
                   />
                 </div>
-                <div className="flex">
-                  <p className="me-4 text-gray-1 mb-0 font-normal text-base">
-                    MIN
-                  </p>
-                  <p className="me-4 text-gray-1 mb-0 font-normal text-base">
-                    HALF
-                  </p>
-                  <p className="text-gray-1 mb-0 font-normal text-base">ALL</p>
-                </div>
+                {isConnected && (
+                  <div className="flex">
+                    <p className="me-4 text-gray-1 mb-0 base-options-text" onClick={handleMin}>
+                      MIN
+                    </p>
+                    <p className="me-4 text-gray-1 mb-0 base-options-text" onClick={handleHalf}>
+                      HALF
+                    </p>
+                    <p className="text-gray-1 mb-0 base-options-text" onClick={handleMax}>ALL</p>
+                  </div>
+                )}
               </div>
             </div>
             <Button
-              className="center-items buy-kelp-btn font-bold text-2xl px-5"
+              className="center-items buy-kelp-btn"
               onClick={handleBuy}
             >
               Buy Kelp
