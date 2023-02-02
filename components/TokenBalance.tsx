@@ -23,7 +23,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
         alt={data?.symbol || "tKELP"}
       ></Image>
       <strong className="token-balance-strong">
-        {data ? (data?.formatted ?? "0") : 0}
+        {data ? parseFloat(data.formatted).toFixed(6) : 0}
       </strong>
     </button>
   );
