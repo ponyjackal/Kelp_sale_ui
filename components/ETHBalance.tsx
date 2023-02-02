@@ -12,7 +12,7 @@ const ETHBalance = () => {
 
   return (
     <p className="eth-balance-text center-items">
-      {isConnected && `BNB Balance: ${data?.formatted ?? 0}`}
+      {isConnected && `BNB Balance: ${data ? (data.formatted.slice(0, data.formatted.indexOf(".") + 9)) : 0}`}
     </p>
   );
 };

@@ -51,7 +51,7 @@ const PaymentMethod = () => {
                   className={`${selectedOption === "BNB" && "text-white"
                     } md:text-2xl xxxs:text-lg font-bold m-0`}
                 >
-                  {data?.formatted ?? 0}
+                  {data ? (data.formatted.slice(0, data.formatted.indexOf(".") + 9)) : 0}
                 </h2>
                 <p
                   className={`${selectedOption === "BNB" ? "text-white" : "text-gray-1"
