@@ -4,12 +4,16 @@ import { useAccount } from "wagmi";
 import { Modal } from "react-bootstrap";
 import Button from "./Button";
 import useBuyKelp from "../hooks/useBuyKelp";
+import { BigNumber } from "ethers";
+import { parseBalance } from "../util";
 
 interface Props {
   show?: boolean;
   onHide: () => void;
   kelpAmount: number;
   bnbAmount: string;
+  bnbPrice: BigNumber;
+  usdAmount: string;
   kelpPrice: string;
   onSettle: (isSuccess: boolean) => void;
 }
@@ -18,6 +22,8 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
   show,
   kelpAmount,
   bnbAmount,
+  bnbPrice,
+  usdAmount,
   kelpPrice,
   onHide,
   onSettle,
@@ -71,13 +77,13 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
             width={15}
             height={15}
           />
-          <p className="font-bold text-xl leading-9">Summary</p>
+          <p className="text-xl leading-9" style={{ color: "#CDCECE" }}>SUMMARY</p>
           <ul className="events pl-0">
             <p
               className="mb-0 ml-12 text-base font-medium"
               style={{ color: "#B0B0B0" }}
             >
-              You Pay
+              YOU PAY
             </p>
             <li>
               <Image
@@ -89,11 +95,15 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
               />
               <time dateTime="10:03"></time>
 
-              <span
-                className="pl-6 pb-10 lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
-                style={{ color: "#2C2D2F" }}
+              <span className="pl-7 pb-10 text-xs leading-6 font-medium"
+                  style={{ color: "#CDCECE" }}
               >
-                {bnbAmount.slice(0, bnbAmount.indexOf(".") + 6)} BNB
+                <p className="mb-0 lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
+                style={{ color: "#2C2D2F" }}
+                >
+                  ${usdAmount} BNB
+                </p>{" "}
+                {bnbAmount.slice(0, bnbAmount.indexOf(".") + 9)} BNB x ${parseBalance((bnbPrice ?? "0"), 18, 2)} / BNB
               </span>
             </li>
 
@@ -115,9 +125,9 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                   className="text-xs leading-6 mt font-medium mb-0"
                   style={{ color: "#2C2D2F" }}
                 >
-                  0.002342342 BNB Transaction fee
+                  $1.34 USD Transaction fee
                 </p>{" "}
-                $1.34 USD Transaction fee
+                0.002342342 BNB Transaction fee  x ${parseBalance((bnbPrice ?? "0"), 18, 2)} / BNB
               </span>
             </li>
             <li>
@@ -160,24 +170,24 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                 width={40}
                 height={40}
               />
-              <time dateTime="10:03"></time>
+              <time className="last-time" dateTime="10:03"></time>
               <p
                 className="pl-7 text-base font-medium mb-0 mt1"
                 style={{ color: "#B0B0B0" }}
               >
                 You Receive{" "}
-                <span
+                <p
                   className="lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
                   style={{ color: "#2C2D2F" }}
                 >
-                  {kelpAmount} Kelp
-                </span>
+                  {kelpAmount.toString().slice(0, kelpAmount.toString().indexOf(".") + 7)} Kelp
+                </p>
               </p>
             </li>
           </ul>
           <div className="flex justify-end">
             <Button
-              className="bg-color FFF md:px-12 lg:px-12 xs:px-10 xxs:px-10 xxxs:px-10 md:py-2.5 lg:py-2.5 xs:py-1 xxs:py-1 xxxs:py-1 text-base font-bold rounded-lg md:mt-5 lg:mt-5 xs:mt-3 xxs:mt-3 xxxs:mt-3"
+              className="bg-color FFF md:px-12 lg:px-12 xs:px-10 xxs:px-10 xxxs:px-10 md:py-2.5 lg:py-2.5 xs:py-1 xxs:py-1 xxxs:py-1 text-base font-bold rounded-lg confirm-purchase-btn"
               onClick={handlePurchase}
               disabled={!writeAsync}
             >

@@ -17,7 +17,7 @@ const BNBBalance = () => {
         className="font-medium text-xs sm:text-sm"
         style={{ color: "#2C2D2F" }}
       >
-        BNB Balance: {data ? parseFloat(data.formatted).toFixed(8) : 0}
+        BNB Balance: {data ? (data.formatted.slice(0, data.formatted.indexOf(".") + 9)) : 0}
       </p>
     </div>
   );
