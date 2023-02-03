@@ -6,10 +6,10 @@
 
 # here we update the server and install node and npm
 echo installing dependencies
-sudo apt-get update
-curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-sudo apt-get install nodejs -y
-sudo apt-get -y install npm
+sudo yum update -y
+sudo yum install -y ruby wget
+curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+sudo yum install nodejs -y
 
 # check to make sure the symbolic link for nodejs node exists
 echo checking for nodejs symlink
