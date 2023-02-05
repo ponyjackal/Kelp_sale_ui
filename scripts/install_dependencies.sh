@@ -27,8 +27,6 @@ else
   echo "$file exists and is already a symlink"
 fi
 
-rm -rf node_modules/ yarn.lock package-lock.json
-
 # install the application using npm
 # we need to traverse to where the application bundle is copied too.
 echo installing application with yarn
