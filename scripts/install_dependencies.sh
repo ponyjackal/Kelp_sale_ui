@@ -37,3 +37,4 @@ sudo yarn install
 
 echo installing pm2
 sudo npm install pm2 -g
+sudo npm install cross-env -g
