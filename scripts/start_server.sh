@@ -10,3 +10,4 @@ sudo cross-env NEXT_PUBLIC_KELP_TOKEN_ADDRESS=0x91be212c43f7eb84f5f7e34fb5e2cbff
 # start the application with pm2
 echo starting application...
 sudo pm2 start yarn -- run start
+sleep 10
