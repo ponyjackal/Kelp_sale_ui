@@ -4,6 +4,12 @@
 
 #stdout logs of this process executing can be found in /opt/codedeploy-agent/deployment-root/47../<deployment_id>/logs/scripts.log
 
+# Introduce swap in lightsail memory
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
 # here we update the server and install node and npm
 echo installing dependencies
 sudo yum update -y
@@ -20,13 +26,6 @@ if [ -f $file ] && [ ! -L $file ] ; then
 else
   echo "$file exists and is already a symlink"
 fi
-
-
-# Introduce swap in lightsail memory
-sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
-sudo /sbin/mkswap /var/swap.1
-sudo chmod 600 /var/swap.1
-sudo /sbin/swapon /var/swap.1
 
 # install the application using npm
 # we need to traverse to where the application bundle is copied too.
