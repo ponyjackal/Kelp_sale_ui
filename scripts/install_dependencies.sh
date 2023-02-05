@@ -9,7 +9,7 @@ echo installing dependencies
 sudo yum update -y
 sudo yum install -y ruby wget
 curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
-sudo yum install nodejs -y
+sudo yum install nodejs git openssh -y
 
 # check to make sure the symbolic link for nodejs node exists
 echo checking for nodejs symlink
@@ -21,11 +21,18 @@ else
   echo "$file exists and is already a symlink"
 fi
 
+
+# Introduce swap in lightsail memory
+sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+sudo /sbin/mkswap /var/swap.1
+sudo chmod 600 /var/swap.1
+sudo /sbin/swapon /var/swap.1
+
 # install the application using npm
 # we need to traverse to where the application bundle is copied too.
-echo installing application with npm
+echo installing application with yarn
 cd /var/www/
-sudo npm install
+sudo yarn install
 
 echo installing pm2
 sudo npm install pm2 -g
