@@ -4,9 +4,17 @@ import { useAccount, useBalance } from "wagmi";
 import { parseBalance } from "../util";
 import useBNBPrice from "../hooks/useBNBPrice";
 import { BigNumber, FixedNumber, utils } from "ethers";
+import { PaymentType } from "../utils/types";
 
-const PaymentMethod = () => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
+type PaymentMethodProps = {
+  selectedOption: PaymentType;
+  setSelectedOption: (type: PaymentType) => void;
+};
+
+const PaymentMethod = ({
+  selectedOption,
+  setSelectedOption,
+}: PaymentMethodProps) => {
   const { address, isConnected } = useAccount();
   const { data, isError, isLoading } = useBalance({
     address,
@@ -19,81 +27,109 @@ const PaymentMethod = () => {
   return (
     <>
       <div>
-        <p className="text-gray-1 sub-heading-text">
-          PAYMENT METHOD
-        </p>
+        <p className="text-gray-1 sub-heading-text">PAYMENT METHOD</p>
         <div className="grid grid-cols-2 lg:gap-12 md:gap-7 xs:gap-4 xxs:gap-4 xxxs:gap-4 md:grid-cols-2 xxxs:grid-cols-1">
           {/* <div className="flex justify-between flex-wrap"> */}
           <button onClick={() => setSelectedOption("BNB")}>
             <div
-              className={`${selectedOption === "BNB" ? "toggle-btn" : ""
-                } payment-option-card p-3 flex justify-between items-center rounded-lg`}
+              className={`${
+                selectedOption === "BNB" ? "toggle-btn" : ""
+              } payment-option-card p-3 flex justify-between items-center rounded-lg`}
             >
               <div>
-                <Image src={"/BNB.png"} className="xxxs:w-8 md:w-10" width={40} height={40} alt="" />
+                <Image
+                  src={"/BNB.png"}
+                  className="xxxs:w-8 md:w-10"
+                  width={40}
+                  height={40}
+                  alt=""
+                />
               </div>
               <div className="text-left">
                 <h2
-                  className={`${selectedOption === "BNB" && "text-white"
-                    } md:text-2xl xxxs:text-lg font-bold m-0`}
+                  className={`${
+                    selectedOption === "BNB" && "text-white"
+                  } md:text-2xl xxxs:text-lg font-bold m-0`}
                 >
                   BNB
                 </h2>
                 <p
-                  className={`${selectedOption === "BNB" ? "text-white" : "text-gray-1"
-                    } m-0 text-xs`}
+                  className={`${
+                    selectedOption === "BNB" ? "text-white" : "text-gray-1"
+                  } m-0 text-xs`}
                 >
                   Binance Smart Chain
                 </p>
               </div>
               <div className="text-right">
                 <h2
-                  className={`${selectedOption === "BNB" && "text-white"
-                    } md:text-2xl xxxs:text-lg font-bold m-0`}
+                  className={`${
+                    selectedOption === "BNB" && "text-white"
+                  } md:text-2xl xxxs:text-lg font-bold m-0`}
                 >
-                  {data ? (data.formatted.slice(0, data.formatted.indexOf(".") + 9)) : 0}
+                  {data
+                    ? data.formatted.slice(0, data.formatted.indexOf(".") + 9)
+                    : 0}
                 </h2>
                 <p
-                  className={`${selectedOption === "BNB" ? "text-white" : "text-gray-1"
-                    } m-0 text-xs`}
+                  className={`${
+                    selectedOption === "BNB" ? "text-white" : "text-gray-1"
+                  } m-0 text-xs`}
                 >
-                  ${FixedNumber.from(parseBalance((bnbPrice as BigNumber ?? "0"), 18, 8)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).round(3)._value.slice(0, -1)}
+                  $
+                  {FixedNumber.from(
+                    parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8)
+                  )
+                    .mulUnsafe(FixedNumber.from(data?.formatted ?? "0"))
+                    .round(3)
+                    ._value.slice(0, -1)}
                 </p>
               </div>
             </div>
           </button>
           <button onClick={() => setSelectedOption("BUSD")}>
             <div
-              className={`${selectedOption === "BUSD" ? "toggle-btn" : ""
-                } payment-option-card p-3 flex justify-between items-center rounded-lg`}
+              className={`${
+                selectedOption === "BUSD" ? "toggle-btn" : ""
+              } payment-option-card p-3 flex justify-between items-center rounded-lg`}
             >
               <div>
-                <Image src={"/BUSD.png"} className="xxxs:w-9 md:w-12" width={40} height={40} alt="" />
+                <Image
+                  src={"/BUSD.png"}
+                  className="xxxs:w-9 md:w-12"
+                  width={40}
+                  height={40}
+                  alt=""
+                />
               </div>
               <div className="text-left">
                 <h2
-                  className={`${selectedOption === "BUSD" && "text-white"
-                    } md:text-2xl xxxs:text-lg font-bold m-0`}
+                  className={`${
+                    selectedOption === "BUSD" && "text-white"
+                  } md:text-2xl xxxs:text-lg font-bold m-0`}
                 >
                   BUSD
                 </h2>
                 <p
-                  className={`${selectedOption === "BUSD" ? "text-white" : "text-gray-1"
-                    } m-0 text-xs`}
+                  className={`${
+                    selectedOption === "BUSD" ? "text-white" : "text-gray-1"
+                  } m-0 text-xs`}
                 >
                   Binance Smart Chain
                 </p>
               </div>
               <div className="text-right">
                 <h2
-                  className={`${selectedOption === "BUSD" && "text-white"
-                    } md:text-2xl xs:text-lg xxs:text-lg xxxs:text-lg font-bold m-0`}
+                  className={`${
+                    selectedOption === "BUSD" && "text-white"
+                  } md:text-2xl xs:text-lg xxs:text-lg xxxs:text-lg font-bold m-0`}
                 >
                   0.000
                 </h2>
                 <p
-                  className={`${selectedOption === "BUSD" ? "text-white" : "text-gray-1"
-                    } m-0 text-xs`}
+                  className={`${
+                    selectedOption === "BUSD" ? "text-white" : "text-gray-1"
+                  } m-0 text-xs`}
                 >
                   $0.00
                 </p>

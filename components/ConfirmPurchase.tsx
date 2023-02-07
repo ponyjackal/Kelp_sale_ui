@@ -3,9 +3,11 @@ import Image from "next/image";
 import { useAccount } from "wagmi";
 import { Modal } from "react-bootstrap";
 import Button from "./Button";
-import useBuyKelp from "../hooks/useBuyKelp";
+import useBuyKelpBNB from "../hooks/useBuyKelpBNB";
+import useBuyKelpBUSD from "../hooks/useBuyKelpBUSD";
 import { BigNumber } from "ethers";
 import { parseBalance } from "../util";
+import { PaymentType } from "../utils/types";
 
 interface Props {
   show?: boolean;
@@ -16,6 +18,7 @@ interface Props {
   usdAmount: string;
   kelpPrice: string;
   onSettle: (isSuccess: boolean) => void;
+  paymentType: PaymentType;
 }
 
 const ConfirmPurchase: FunctionComponent<Props> = ({
@@ -25,27 +28,50 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
   bnbPrice,
   usdAmount,
   kelpPrice,
+  paymentType,
   onHide,
   onSettle,
 }) => {
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
-  const { data, isLoading, isSuccess, error, writeAsync, isIdle } = useBuyKelp(
-    address ?? "",
-    bnbAmount
-  );
+  const {
+    data: dataBNB,
+    isLoading: isLoadingBNB,
+    isSuccess: isSuccessBNB,
+    error: errorBNB,
+    writeAsync: writeAsyncBNB,
+    isIdle: isIdleBNB,
+  } = useBuyKelpBNB(address ?? "", bnbAmount);
+
+  const {
+    data: dataBUSD,
+    isLoading: isLoadingBUSD,
+    isSuccess: isSuccessBUSD,
+    error: errorBUSD,
+    writeAsync: writeAsyncBUSD,
+    isIdle: isIdleBUSD,
+  } = useBuyKelpBUSD(address ?? "", usdAmount);
+
+  console.log("payment method", paymentType);
 
   const [isWriting, setIsWriting] = useState<boolean>(false);
+  const isLoading = paymentType === "BNB" ? isLoadingBNB : isLoadingBUSD;
 
   const handlePurchase = () => {
-    if (writeAsync) {
-      writeAsync();
+    if (paymentType === "BNB") {
+      if (writeAsyncBNB) {
+        writeAsyncBNB();
+      }
+    } else {
+      if (writeAsyncBUSD) {
+        writeAsyncBUSD();
+      }
     }
   };
 
   useEffect(() => {
     const onTxSettle = async () => {
       setIsWriting(true);
-      const res = await data?.wait();
+      const res = await dataBNB?.wait();
       setIsWriting(false);
 
       if (res && res.blockHash) {
@@ -55,10 +81,44 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
       }
     };
 
-    if (isSuccess && data && !isLoading && !error && !isIdle && !isWriting) {
-      onTxSettle();
+    if (paymentType === "BNB") {
+      if (
+        isSuccessBNB &&
+        dataBNB &&
+        !isLoadingBNB &&
+        !errorBNB &&
+        !isIdleBNB &&
+        !isWriting
+      ) {
+        onTxSettle();
+      }
+    } else {
+      if (
+        isSuccessBUSD &&
+        dataBUSD &&
+        !isLoadingBUSD &&
+        !errorBUSD &&
+        !isIdleBUSD &&
+        !isWriting
+      ) {
+        onTxSettle();
+      }
     }
-  }, [data, isLoading, isSuccess, error, isWriting, isIdle, onSettle]);
+  }, [
+    dataBNB,
+    isLoadingBNB,
+    isSuccessBNB,
+    errorBNB,
+    isWriting,
+    isIdleBNB,
+    dataBUSD,
+    isLoadingBUSD,
+    isSuccessBUSD,
+    errorBUSD,
+    isIdleBUSD,
+    onSettle,
+    paymentType,
+  ]);
 
   return (
     <>
@@ -77,7 +137,9 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
             width={15}
             height={15}
           />
-          <p className="text-xl leading-9" style={{ color: "#CDCECE" }}>SUMMARY</p>
+          <p className="text-xl leading-9" style={{ color: "#CDCECE" }}>
+            SUMMARY
+          </p>
           <ul className="events pl-0">
             <p
               className="mb-0 ml-12 text-base font-medium"
@@ -95,15 +157,18 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
               />
               <time dateTime="10:03"></time>
 
-              <span className="pl-7 pb-10 text-xs leading-6 font-medium"
-                  style={{ color: "#CDCECE" }}
+              <span
+                className="pl-7 pb-10 text-xs leading-6 font-medium"
+                style={{ color: "#CDCECE" }}
               >
-                <p className="mb-0 lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
-                style={{ color: "#2C2D2F" }}
+                <p
+                  className="mb-0 lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
+                  style={{ color: "#2C2D2F" }}
                 >
-                  ${usdAmount} BNB
+                  ${usdAmount}
                 </p>{" "}
-                {bnbAmount.slice(0, bnbAmount.indexOf(".") + 9)} BNB x ${parseBalance((bnbPrice ?? "0"), 18, 2)} / BNB
+                {bnbAmount.slice(0, bnbAmount.indexOf(".") + 9)} BNB x $
+                {parseBalance(bnbPrice ?? "0", 18, 2)} / BNB
               </span>
             </li>
 
@@ -127,7 +192,8 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                 >
                   $1.34 USD Transaction fee
                 </p>{" "}
-                0.002342342 BNB Transaction fee  x ${parseBalance((bnbPrice ?? "0"), 18, 2)} / BNB
+                0.002342342 BNB Transaction fee x $
+                {parseBalance(bnbPrice ?? "0", 18, 2)} / BNB
               </span>
             </li>
             <li>
@@ -180,7 +246,10 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                   className="lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
                   style={{ color: "#2C2D2F" }}
                 >
-                  {kelpAmount.toString().slice(0, kelpAmount.toString().indexOf(".") + 7)} Kelp
+                  {kelpAmount
+                    .toString()
+                    .slice(0, kelpAmount.toString().indexOf(".") + 7)}{" "}
+                  Kelp
                 </p>
               </p>
             </li>
@@ -189,7 +258,9 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
             <Button
               className="bg-color FFF md:px-12 lg:px-12 xs:px-10 xxs:px-10 xxxs:px-10 md:py-2.5 lg:py-2.5 xs:py-1 xxs:py-1 xxxs:py-1 text-base font-bold rounded-lg confirm-purchase-btn"
               onClick={handlePurchase}
-              disabled={!writeAsync}
+              disabled={
+                paymentType === "BNB" ? !writeAsyncBNB : !writeAsyncBUSD
+              }
             >
               {isLoading || isWriting ? "Loading ..." : "Confirm Purchase"}
             </Button>

@@ -9,20 +9,21 @@ import TotalRaised from "../components/TotalRaised";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import ConfirmPurchase from "../components/ConfirmPurchase";
-import TokenBalance from "../components/TokenBalance";
 import useBNBPrice from "../hooks/useBNBPrice";
 import useKelpPrice from "../hooks/useKelpPrice";
 import useLimitPerAccount from "../hooks/useLimitPerAccount";
-import { KELP_TOKEN_ADDRESS } from "../utils/constants";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import PaymentMethod from "../components/PaymentMethod";
 import { parseBalance } from "../util";
+import { PaymentType } from "../utils/types";
 
 function Home() {
   const { address, isConnected } = useAccount();
   const { kelpPrice } = useKelpPrice();
   const { limitPerAccount } = useLimitPerAccount();
+
+  const [paymentType, setPaymentType] = useState<PaymentType>("BNB");
 
   const [confirmPurchaseModal, setConfirmPurchaseModal] =
     useState<boolean>(false);
@@ -133,45 +134,61 @@ function Home() {
     }
   };
 
-  const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
+  const mouseClickEvents = ["mousedown", "click", "mouseup"];
   function simulateMouseClick(element: HTMLElement) {
-    mouseClickEvents.forEach(mouseEventType =>
+    mouseClickEvents.forEach((mouseEventType) =>
       element.dispatchEvent(
         new MouseEvent(mouseEventType, {
           view: window,
           bubbles: true,
-          cancelable: false
+          cancelable: false,
         })
       )
     );
   }
 
   useEffect(() => {
-    let inputElement = document.getElementById('input-amount-value');
-    if (inputElement)
-      simulateMouseClick(inputElement);
+    let inputElement = document.getElementById("input-amount-value");
+    if (inputElement) simulateMouseClick(inputElement);
   }, [usdAmount]);
 
   const handleMin = () => {
-    let minValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber ?? "0"), 18, 8)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).mulUnsafe(FixedNumber.from("0.25")).round(3)._value.slice(0, -1);
-    if (minValue.charAt(minValue.length - 2) === '.')
+    let minValue = FixedNumber.from(
+      parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8)
+    )
+      .mulUnsafe(FixedNumber.from(data?.formatted ?? "0"))
+      .mulUnsafe(FixedNumber.from("0.25"))
+      .round(3)
+      ._value.slice(0, -1);
+    if (minValue.charAt(minValue.length - 2) === ".")
       minValue = minValue.concat("0");
     setUSDAmount(minValue);
-  }
+  };
 
   const handleHalf = () => {
-    let halfValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber ?? "0"), 18, 8)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).mulUnsafe(FixedNumber.from("0.50")).round(3)._value.slice(0, -1);
-    if (halfValue.charAt(halfValue.length - 2) === '.')
+    let halfValue = FixedNumber.from(
+      parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8)
+    )
+      .mulUnsafe(FixedNumber.from(data?.formatted ?? "0"))
+      .mulUnsafe(FixedNumber.from("0.50"))
+      .round(3)
+      ._value.slice(0, -1);
+    if (halfValue.charAt(halfValue.length - 2) === ".")
       halfValue = halfValue.concat("0");
     setUSDAmount(halfValue);
-  }
+  };
 
   const handleMax = () => {
-    let maxValue = FixedNumber.from(parseBalance((bnbPrice as BigNumber ?? "0"), 18, 8)).mulUnsafe(FixedNumber.from(data?.formatted ?? "0")).round(3)._value.slice(0, -1);
-    if (maxValue.charAt(maxValue.length - 2) === '.')
+    let maxValue = FixedNumber.from(
+      parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8)
+    )
+      .mulUnsafe(FixedNumber.from(data?.formatted ?? "0"))
+      .round(3)
+      ._value.slice(0, -1);
+    if (maxValue.charAt(maxValue.length - 2) === ".")
       maxValue = maxValue.concat("0");
     setUSDAmount(maxValue);
-  }
+  };
 
   const handleBuy = () => {
     if (!usdAmount || parseFloat(usdAmount) <= 0) {
@@ -214,7 +231,10 @@ function Home() {
       <Header />
 
       <main className="container bg-white rounded-xl p-0">
-        <div className="md:px-10 md:py-12 xxxs:p-5 container-div" style={{ marginBottom: "50px" }}>
+        <div
+          className="md:px-10 md:py-12 xxxs:p-5 container-div"
+          style={{ marginBottom: "50px" }}
+        >
           <section>
             <h1 className="text-gray-1 text-center heading-text">
               PRIVATE SALE
@@ -226,7 +246,10 @@ function Home() {
           <TotalRaised />
 
           {isConnected && (
-            <PaymentMethod />
+            <PaymentMethod
+              selectedOption={paymentType}
+              setSelectedOption={setPaymentType}
+            />
           )}
 
           {/* <div className="flex justify-center items-center text-center mt-24">
@@ -241,9 +264,7 @@ function Home() {
           <div>
             <div className="text-left my-6">
               {/* <span className="text-left" id={"enter-amount-text"}>ENTER AMOUNT</span> */}
-              <span className="sub-heading-text text-gray-1">
-                ENTER AMOUNT
-              </span>
+              <span className="sub-heading-text text-gray-1">ENTER AMOUNT</span>
               <div className="flex flex-wrap xxs:justify-between xxxs:justify-center xxxs:mb-2 xxs:mb-0 items-center">
                 <div>
                   <Input
@@ -260,21 +281,29 @@ function Home() {
                 </div>
                 {isConnected && (
                   <div className="flex">
-                    <p className="me-4 text-gray-1 mb-0 base-options-text" onClick={handleMin}>
+                    <p
+                      className="me-4 text-gray-1 mb-0 base-options-text"
+                      onClick={handleMin}
+                    >
                       MIN
                     </p>
-                    <p className="me-4 text-gray-1 mb-0 base-options-text" onClick={handleHalf}>
+                    <p
+                      className="me-4 text-gray-1 mb-0 base-options-text"
+                      onClick={handleHalf}
+                    >
                       HALF
                     </p>
-                    <p className="text-gray-1 mb-0 base-options-text" onClick={handleMax}>ALL</p>
+                    <p
+                      className="text-gray-1 mb-0 base-options-text"
+                      onClick={handleMax}
+                    >
+                      ALL
+                    </p>
                   </div>
                 )}
               </div>
             </div>
-            <Button
-              className="center-items buy-kelp-btn"
-              onClick={handleBuy}
-            >
+            <Button className="center-items buy-kelp-btn" onClick={handleBuy}>
               Buy Kelp
             </Button>
             {error && <p className="text-red text-lg">{error}</p>}
@@ -289,6 +318,7 @@ function Home() {
               kelpAmount={kelpAmount}
               kelpPrice={kelpPrice}
               onSettle={handleTx}
+              paymentType={paymentType}
             />
           )}
         </div>

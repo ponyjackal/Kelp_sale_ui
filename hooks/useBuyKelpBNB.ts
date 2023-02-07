@@ -5,11 +5,11 @@ import crowdSaleABI from "../contracts/CrowdSale.json";
 const crowdSaleContractAddress = process.env
   .NEXT_PUBLIC_CROWD_SALE_ADDRESS as `0x${string}`;
 
-export default function useBuyKelp(beneficiary: string, bnbAmount: string) {
+export default function useBuyKelpBNB(beneficiary: string, bnbAmount: string) {
   const { config } = usePrepareContractWrite({
     address: crowdSaleContractAddress,
     abi: crowdSaleABI,
-    functionName: "buyActiveSaleTokens",
+    functionName: "buyActiveSaleTokensBNB",
     args: [beneficiary],
     overrides: {
       value: utils.parseEther(bnbAmount),
