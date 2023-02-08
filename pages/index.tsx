@@ -32,9 +32,23 @@ function Home() {
   const [error, setError] = useState<string>("");
 
   const { data: bnbPrice } = useBNBPrice();
-  const { data, isError, isLoading } = useBalance({
+  const {
+    data: dataBNB,
+    isError: isErrorBNB,
+    isLoading: isLoadingBNB,
+  } = useBalance({
     address,
     chainId: 56,
+  });
+  const {
+    data: dataBUSD,
+    isError: isErrorBUSD,
+    isLoading: isLoadingBUSD,
+  } = useBalance({
+    address,
+    chainId: 56,
+    token: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+    watch: true,
   });
 
   const bnbPriceString = bnbPrice
@@ -153,40 +167,52 @@ function Home() {
   }, [usdAmount]);
 
   const handleMin = () => {
-    let minValue = FixedNumber.from(
-      parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8)
-    )
-      .mulUnsafe(FixedNumber.from(data?.formatted ?? "0"))
-      .mulUnsafe(FixedNumber.from("0.25"))
-      .round(3)
-      ._value.slice(0, -1);
+    let minValue =
+      paymentType === "BNB"
+        ? FixedNumber.from(parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8))
+            .mulUnsafe(FixedNumber.from(dataBNB?.formatted ?? "0"))
+            .mulUnsafe(FixedNumber.from("0.25"))
+            .round(3)._value
+        : FixedNumber.from(dataBUSD?.formatted ?? "0")
+            .mulUnsafe(FixedNumber.from("0.25"))
+            .round(3)._value;
+
     if (minValue.charAt(minValue.length - 2) === ".")
       minValue = minValue.concat("0");
+
     setUSDAmount(minValue);
   };
 
   const handleHalf = () => {
-    let halfValue = FixedNumber.from(
-      parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8)
-    )
-      .mulUnsafe(FixedNumber.from(data?.formatted ?? "0"))
-      .mulUnsafe(FixedNumber.from("0.50"))
-      .round(3)
-      ._value.slice(0, -1);
+    let halfValue =
+      paymentType === "BNB"
+        ? FixedNumber.from(parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8))
+            .mulUnsafe(FixedNumber.from(dataBNB?.formatted ?? "0"))
+            .mulUnsafe(FixedNumber.from("0.50"))
+            .round(3)._value
+        : FixedNumber.from(dataBUSD?.formatted ?? "0")
+            .mulUnsafe(FixedNumber.from("0.50"))
+            .round(3)._value;
+
+    console.log("half value", halfValue);
+
     if (halfValue.charAt(halfValue.length - 2) === ".")
       halfValue = halfValue.concat("0");
+
     setUSDAmount(halfValue);
   };
 
   const handleMax = () => {
-    let maxValue = FixedNumber.from(
-      parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8)
-    )
-      .mulUnsafe(FixedNumber.from(data?.formatted ?? "0"))
-      .round(3)
-      ._value.slice(0, -1);
+    let maxValue: string =
+      paymentType === "BNB"
+        ? FixedNumber.from(parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8))
+            .mulUnsafe(FixedNumber.from(dataBNB?.formatted ?? "0"))
+            .round(3)._value
+        : dataBUSD?.formatted ?? "0";
+
     if (maxValue.charAt(maxValue.length - 2) === ".")
       maxValue = maxValue.concat("0");
+
     setUSDAmount(maxValue);
   };
 
@@ -251,19 +277,8 @@ function Home() {
               setSelectedOption={setPaymentType}
             />
           )}
-
-          {/* <div className="flex justify-center items-center text-center mt-24">
-            <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl">
-              Kelp Price: ${kelpPrice}
-            </h2>
-            <h2 className="text-gray-1 font-bold leading-6 text-xl sm:text-2xl ml-4">
-              BNB Price: ${bnbPriceString}
-            </h2>
-          </div> */}
-
           <div>
             <div className="text-left my-6">
-              {/* <span className="text-left" id={"enter-amount-text"}>ENTER AMOUNT</span> */}
               <span className="sub-heading-text text-gray-1">ENTER AMOUNT</span>
               <div className="flex flex-wrap xxs:justify-between xxxs:justify-center xxxs:mb-2 xxs:mb-0 items-center">
                 <div>
