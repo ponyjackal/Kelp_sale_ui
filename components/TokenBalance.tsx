@@ -1,9 +1,10 @@
 import { useAccount, useBalance } from "wagmi";
 import Image from "next/image";
 import tokenLogo from "../public/token-logo.png";
+import { Address } from "../utils/types";
 
 type TokenBalanceProps = {
-  tokenAddress: `0x${string}`;
+  tokenAddress: Address;
 };
 
 const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
@@ -16,14 +17,17 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   });
 
   return (
-    <button type="button" className="token-balance-text text-green-1 btn-header btn">
+    <button
+      type="button"
+      className="token-balance-text text-green-1 btn-header btn"
+    >
       <Image
         className="kelp-token-logo"
         src={tokenLogo}
         alt={data?.symbol || "tKELP"}
       ></Image>
       <strong className="token-balance-strong">
-        {data ? (data.formatted.slice(0, data.formatted.indexOf(".") + 7)) : 0}
+        {data ? data.formatted.slice(0, data.formatted.indexOf(".") + 7) : 0}
       </strong>
     </button>
   );

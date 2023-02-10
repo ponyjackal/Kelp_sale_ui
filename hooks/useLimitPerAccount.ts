@@ -14,8 +14,6 @@ const useLimitPerAccount = () => {
     const limit = saleInfo.limitPerAccount;
     const limitStr = utils.formatEther(limit);
 
-    console.log("limit", limitStr);
-
     return limitStr.slice(0, limitStr.indexOf(".") + 6);
   }, [saleInfo]);
 
