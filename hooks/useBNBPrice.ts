@@ -1,8 +1,9 @@
 import { useContractRead } from "wagmi";
 import crowdSaleABI from "../contracts/CrowdSale.json";
+import { Address } from "../utils/types";
 
 const crowdSaleContractAddress = process.env
-  .NEXT_PUBLIC_CROWD_SALE_ADDRESS as `0x${string}`;
+  .NEXT_PUBLIC_CROWD_SALE_ADDRESS as Address;
 
 export default function useBNBPrice() {
   const contract = useContractRead({

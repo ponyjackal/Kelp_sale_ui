@@ -16,7 +16,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import PaymentMethod from "../components/PaymentMethod";
 import { parseBalance } from "../util";
-import { PaymentType } from "../utils/types";
+import { PaymentType, Address } from "../utils/types";
+
+const BUSD_ADDRESS = process.env.NEXT_PUBLIC_BUSD_ADDRESS as Address;
 
 function Home() {
   const { address, isConnected } = useAccount();
@@ -47,7 +49,7 @@ function Home() {
   } = useBalance({
     address,
     chainId: 56,
-    token: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+    token: BUSD_ADDRESS,
     watch: true,
   });
 
@@ -194,8 +196,6 @@ function Home() {
             .mulUnsafe(FixedNumber.from("0.50"))
             .round(3)._value;
 
-    console.log("half value", halfValue);
-
     if (halfValue.charAt(halfValue.length - 2) === ".")
       halfValue = halfValue.concat("0");
 
@@ -300,7 +300,7 @@ function Home() {
                       className="me-4 text-gray-1 mb-0 base-options-text"
                       onClick={handleMin}
                     >
-                      MIN
+                      25%
                     </p>
                     <p
                       className="me-4 text-gray-1 mb-0 base-options-text"

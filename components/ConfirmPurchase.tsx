@@ -5,6 +5,7 @@ import { Modal } from "react-bootstrap";
 import Button from "./Button";
 import useBuyKelpBNB from "../hooks/useBuyKelpBNB";
 import useBuyKelpBUSD from "../hooks/useBuyKelpBUSD";
+import useApproveBUSD from "../hooks/useApproveBUSD";
 import { BigNumber } from "ethers";
 import { parseBalance } from "../util";
 import { PaymentType } from "../utils/types";
@@ -41,7 +42,6 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
     writeAsync: writeAsyncBNB,
     isIdle: isIdleBNB,
   } = useBuyKelpBNB(address ?? "", bnbAmount);
-
   const {
     data: dataBUSD,
     isLoading: isLoadingBUSD,
@@ -50,10 +50,17 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
     writeAsync: writeAsyncBUSD,
     isIdle: isIdleBUSD,
   } = useBuyKelpBUSD(address ?? "", usdAmount);
-
-  console.log("payment method", paymentType);
+  const {
+    data: dataApprove,
+    isLoading: isLoadingApprove,
+    isSuccess: isSuccessApprove,
+    error: errorApprove,
+    writeAsync: writeAsyncApprove,
+    isIdle: isIdleApprove,
+  } = useApproveBUSD(usdAmount);
 
   const [isWriting, setIsWriting] = useState<boolean>(false);
+  const [hasApproved, setHasApproved] = useState<boolean>(false);
   const isLoading = paymentType === "BNB" ? isLoadingBNB : isLoadingBUSD;
 
   const handlePurchase = () => {
@@ -68,10 +75,23 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
     }
   };
 
+  const handleApprove = () => {
+    if (paymentType === "BUSD") {
+      if (writeAsyncApprove) {
+        writeAsyncApprove();
+      }
+    }
+  };
+
+  useEffect(() => {
+    setHasApproved(false);
+  }, [usdAmount]);
+
   useEffect(() => {
     const onTxSettle = async () => {
       setIsWriting(true);
-      const res = await dataBNB?.wait();
+      const res =
+        paymentType === "BNB" ? await dataBNB?.wait() : await dataBUSD?.wait();
       setIsWriting(false);
 
       if (res && res.blockHash) {
@@ -118,6 +138,44 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
     isIdleBUSD,
     onSettle,
     paymentType,
+  ]);
+
+  useEffect(() => {
+    const onTxSettle = async () => {
+      setIsWriting(true);
+      const res = await dataApprove?.wait();
+      setIsWriting(false);
+
+      if (res && res.blockHash) {
+        setHasApproved(true);
+      } else {
+        setHasApproved(false);
+      }
+    };
+
+    if (paymentType === "BUSD") {
+      if (
+        isSuccessApprove &&
+        dataApprove &&
+        !isLoadingApprove &&
+        !errorApprove &&
+        !isIdleApprove &&
+        !isWriting &&
+        !hasApproved
+      ) {
+        onTxSettle();
+      }
+    }
+  }, [
+    dataApprove,
+    isLoadingApprove,
+    isSuccessApprove,
+    errorApprove,
+    isWriting,
+    isIdleApprove,
+    onSettle,
+    paymentType,
+    hasApproved,
   ]);
 
   return (
@@ -255,15 +313,25 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
             </li>
           </ul>
           <div className="flex justify-end">
-            <Button
-              className="bg-color FFF md:px-12 lg:px-12 xs:px-10 xxs:px-10 xxxs:px-10 md:py-2.5 lg:py-2.5 xs:py-1 xxs:py-1 xxxs:py-1 text-base font-bold rounded-lg confirm-purchase-btn"
-              onClick={handlePurchase}
-              disabled={
-                paymentType === "BNB" ? !writeAsyncBNB : !writeAsyncBUSD
-              }
-            >
-              {isLoading || isWriting ? "Loading ..." : "Confirm Purchase"}
-            </Button>
+            {!hasApproved && paymentType === "BUSD" ? (
+              <Button
+                className="bg-color FFF md:px-12 lg:px-12 xs:px-10 xxs:px-10 xxxs:px-10 md:py-2.5 lg:py-2.5 xs:py-1 xxs:py-1 xxxs:py-1 text-base font-bold rounded-lg confirm-purchase-btn"
+                onClick={handleApprove}
+                disabled={!writeAsyncApprove}
+              >
+                {isLoadingApprove || isWriting ? "Approving ..." : "Approve"}
+              </Button>
+            ) : (
+              <Button
+                className="bg-color FFF md:px-12 lg:px-12 xs:px-10 xxs:px-10 xxxs:px-10 md:py-2.5 lg:py-2.5 xs:py-1 xxs:py-1 xxxs:py-1 text-base font-bold rounded-lg confirm-purchase-btn"
+                onClick={handlePurchase}
+                disabled={
+                  paymentType === "BNB" ? !writeAsyncBNB : !writeAsyncBUSD
+                }
+              >
+                {isLoading || isWriting ? "Loading ..." : "Confirm Purchase"}
+              </Button>
+            )}
           </div>
         </Modal.Body>
       </Modal>

@@ -4,7 +4,9 @@ import { useAccount, useBalance } from "wagmi";
 import { parseBalance } from "../util";
 import useBNBPrice from "../hooks/useBNBPrice";
 import { BigNumber, FixedNumber, utils } from "ethers";
-import { PaymentType } from "../utils/types";
+import { PaymentType, Address } from "../utils/types";
+
+const BUSD_ADDRESS = process.env.NEXT_PUBLIC_BUSD_ADDRESS as Address;
 
 type PaymentMethodProps = {
   selectedOption: PaymentType;
@@ -32,11 +34,10 @@ const PaymentMethod = ({
   } = useBalance({
     address,
     chainId: 56,
-    token: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+    token: BUSD_ADDRESS,
     watch: true,
   });
   const { data: bnbPrice } = useBNBPrice();
-  const white_color = "#FFFFFF";
 
   return (
     <>
