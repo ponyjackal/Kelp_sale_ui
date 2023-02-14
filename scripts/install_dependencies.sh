@@ -27,6 +27,8 @@ else
   echo "$file exists and is already a symlink"
 fi
 
+sudo npm install yarn -g
+
 # install the application using npm
 # we need to traverse to where the application bundle is copied too.
 echo installing application with yarn
