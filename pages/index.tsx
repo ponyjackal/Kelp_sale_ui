@@ -198,21 +198,6 @@ function Home() {
     setError("");
   };
 
-  const handleMax = () => {
-    let maxValue: string =
-      paymentType === "BNB"
-        ? FixedNumber.from(parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8))
-            .mulUnsafe(FixedNumber.from(dataBNB?.formatted ?? "0"))
-            .round(2)._value
-        : getFixedAmount(dataBUSD?.formatted ?? "0");
-
-    if (maxValue.charAt(maxValue.length - 2) === ".")
-      maxValue = maxValue.concat("0");
-
-    setUSDAmount(maxValue);
-    setError("");
-  };
-
   const handleBuy = () => {
     if (!usdAmount || parseFloat(usdAmount) <= 0) {
       setError("Invalid Amount");
