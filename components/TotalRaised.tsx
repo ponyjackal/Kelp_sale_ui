@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { ProgressBar } from "react-bootstrap";
-import { utils, BigNumber, constants } from "ethers";
+import { utils, BigNumber } from "ethers";
 import useTotalRaised from "../hooks/useTotalRaised";
 import useSales from "../hooks/useSales";
 import useKelpPrice from "../hooks/useKelpPrice";
