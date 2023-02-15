@@ -94,12 +94,11 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
   const handlePurchase = () => {
     if (paymentType === "BNB") {
       if (writeAsyncBNB) {
-        console.log("bnb amount", subBNBAmount, bnbAmount, gasFee);
-        // writeAsyncBNB();
+        writeAsyncBNB();
       }
     } else {
       if (writeAsyncBUSD) {
-        // writeAsyncBUSD();
+        writeAsyncBUSD();
       }
     }
   };
