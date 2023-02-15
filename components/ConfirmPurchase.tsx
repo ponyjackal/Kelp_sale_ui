@@ -17,7 +17,6 @@ import { PaymentType } from "../utils/types";
 interface Props {
   show?: boolean;
   onHide: () => void;
-  kelpAmount: number;
   bnbAmount: string;
   bnbPrice: BigNumber;
   usdAmount: string;
@@ -28,7 +27,6 @@ interface Props {
 
 const ConfirmPurchase: FunctionComponent<Props> = ({
   show,
-  kelpAmount,
   bnbAmount,
   bnbPrice,
   usdAmount,
@@ -54,10 +52,14 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
       )
     : "";
   const subUSDAmount = transactionFee
-    ? Number(usdAmount) - Number(transactionFee)
+    ? paymentType === "BNB"
+      ? Number(usdAmount) - Number(transactionFee)
+      : Number(usdAmount) + Number(transactionFee)
     : 0;
   const outKelpAmount = subUSDAmount
-    ? (subUSDAmount / parseFloat(kelpPrice)).toFixed(6)
+    ? paymentType === "BNB"
+      ? (subUSDAmount / parseFloat(kelpPrice)).toFixed(6)
+      : (parseFloat(usdAmount) / parseFloat(kelpPrice)).toFixed(6)
     : "";
 
   const {

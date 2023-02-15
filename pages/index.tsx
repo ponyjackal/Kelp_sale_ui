@@ -330,7 +330,6 @@ function Home() {
               bnbAmount={bnbAmount}
               bnbPrice={bnbPrice as BigNumber}
               usdAmount={usdAmount}
-              kelpAmount={kelpAmount}
               kelpPrice={kelpPrice}
               onSettle={handleTx}
               paymentType={paymentType}
