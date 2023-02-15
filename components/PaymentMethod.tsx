@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
 import { useAccount, useBalance } from "wagmi";
-import { parseBalance, getFixedAmount } from "../utils/util";
+import { getFixedAmount } from "../utils/util";
 import useBNBPrice from "../hooks/useBNBPrice";
-import { BigNumber, FixedNumber, utils } from "ethers";
+import { BigNumber, utils } from "ethers";
 import { PaymentType, Address } from "../utils/types";
 
 const BUSD_ADDRESS = process.env.NEXT_PUBLIC_BUSD_ADDRESS as Address;

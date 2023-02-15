@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import Head from "next/head";
 import { useAccount, useBalance } from "wagmi";
-import { BigNumber, FixedNumber, utils } from "ethers";
+import { BigNumber, utils } from "ethers";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../components/Header";
 import Countdown from "../components/CountDown";
@@ -15,7 +15,7 @@ import useLimitPerAccount from "../hooks/useLimitPerAccount";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import PaymentMethod from "../components/PaymentMethod";
-import { parseBalance, getFixedAmount } from "../utils/util";
+import { getFixedAmount } from "../utils/util";
 import { PaymentType, Address } from "../utils/types";
 
 const BUSD_ADDRESS = process.env.NEXT_PUBLIC_BUSD_ADDRESS as Address;
