@@ -15,7 +15,7 @@ import useLimitPerAccount from "../hooks/useLimitPerAccount";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import PaymentMethod from "../components/PaymentMethod";
-import { parseBalance } from "../utils/util";
+import { parseBalance, getFixedAmount } from "../utils/util";
 import { PaymentType, Address } from "../utils/types";
 
 const BUSD_ADDRESS = process.env.NEXT_PUBLIC_BUSD_ADDRESS as Address;
@@ -168,39 +168,33 @@ function Home() {
     if (inputElement) simulateMouseClick(inputElement);
   }, [usdAmount]);
 
-  const handleMin = () => {
-    let minValue =
-      paymentType === "BNB"
-        ? FixedNumber.from(parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8))
-            .mulUnsafe(FixedNumber.from(dataBNB?.formatted ?? "0"))
-            .mulUnsafe(FixedNumber.from("0.25"))
-            .round(3)._value
-        : FixedNumber.from(dataBUSD?.formatted ?? "0")
-            .mulUnsafe(FixedNumber.from("0.25"))
-            .round(3)._value;
+  const getPartialAmount = (percentage: string) => {
+    let value = "0.00";
 
-    if (minValue.charAt(minValue.length - 2) === ".")
-      minValue = minValue.concat("0");
+    if (paymentType === "BNB" && dataBNB?.value) {
+      value = getFixedAmount(
+        utils.formatEther(
+          (bnbPrice as BigNumber)
+            .mul(dataBNB?.value)
+            .mul(utils.parseEther(percentage))
+            .div(utils.parseEther("1"))
+            .div(utils.parseEther("1"))
+        ),
+        2
+      );
+    }
 
-    setUSDAmount(minValue);
-    setError("");
-  };
+    if (paymentType === "BUSD" && dataBUSD?.value)
+      value = getFixedAmount(
+        utils.formatEther(
+          (dataBUSD?.value as BigNumber)
+            .mul(utils.parseEther(percentage))
+            .div(utils.parseEther("1"))
+        ),
+        2
+      );
 
-  const handleHalf = () => {
-    let halfValue =
-      paymentType === "BNB"
-        ? FixedNumber.from(parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8))
-            .mulUnsafe(FixedNumber.from(dataBNB?.formatted ?? "0"))
-            .mulUnsafe(FixedNumber.from("0.50"))
-            .round(3)._value
-        : FixedNumber.from(dataBUSD?.formatted ?? "0")
-            .mulUnsafe(FixedNumber.from("0.50"))
-            .round(3)._value;
-
-    if (halfValue.charAt(halfValue.length - 2) === ".")
-      halfValue = halfValue.concat("0");
-
-    setUSDAmount(halfValue);
+    setUSDAmount(value);
     setError("");
   };
 
@@ -209,8 +203,8 @@ function Home() {
       paymentType === "BNB"
         ? FixedNumber.from(parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8))
             .mulUnsafe(FixedNumber.from(dataBNB?.formatted ?? "0"))
-            .round(3)._value
-        : dataBUSD?.formatted ?? "0";
+            .round(2)._value
+        : getFixedAmount(dataBUSD?.formatted ?? "0");
 
     if (maxValue.charAt(maxValue.length - 2) === ".")
       maxValue = maxValue.concat("0");
@@ -301,19 +295,19 @@ function Home() {
                   <div className="flex">
                     <p
                       className="me-4 text-gray-1 mb-0 base-options-text"
-                      onClick={handleMin}
+                      onClick={() => getPartialAmount("0.25")}
                     >
                       25%
                     </p>
                     <p
                       className="me-4 text-gray-1 mb-0 base-options-text"
-                      onClick={handleHalf}
+                      onClick={() => getPartialAmount("0.5")}
                     >
                       HALF
                     </p>
                     <p
                       className="text-gray-1 mb-0 base-options-text"
-                      onClick={handleMax}
+                      onClick={() => getPartialAmount("1")}
                     >
                       ALL
                     </p>

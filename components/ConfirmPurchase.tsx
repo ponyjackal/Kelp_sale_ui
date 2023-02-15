@@ -45,10 +45,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
     : "";
   const transactionFee = gasFee
     ? utils.formatEther(
-        utils
-          .parseEther(gasFee)
-          .mul(bnbPrice)
-          .div(BigNumber.from("1000000000000000000"))
+        utils.parseEther(gasFee).mul(bnbPrice).div(utils.parseEther("1"))
       )
     : "";
   const subUSDAmount = transactionFee
