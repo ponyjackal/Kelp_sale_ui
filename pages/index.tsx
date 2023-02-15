@@ -183,6 +183,7 @@ function Home() {
       minValue = minValue.concat("0");
 
     setUSDAmount(minValue);
+    setError("");
   };
 
   const handleHalf = () => {
@@ -200,6 +201,7 @@ function Home() {
       halfValue = halfValue.concat("0");
 
     setUSDAmount(halfValue);
+    setError("");
   };
 
   const handleMax = () => {
@@ -214,6 +216,7 @@ function Home() {
       maxValue = maxValue.concat("0");
 
     setUSDAmount(maxValue);
+    setError("");
   };
 
   const handleBuy = () => {
