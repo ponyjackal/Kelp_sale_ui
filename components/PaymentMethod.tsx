@@ -1,7 +1,7 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { useAccount, useBalance } from "wagmi";
-import { parseBalance } from "../utils/util";
+import { parseBalance, getFixedAmount } from "../utils/util";
 import useBNBPrice from "../hooks/useBNBPrice";
 import { BigNumber, FixedNumber, utils } from "ethers";
 import { PaymentType, Address } from "../utils/types";
@@ -81,12 +81,7 @@ const PaymentMethod = ({
                     selectedOption === "BNB" && "text-white"
                   } md:text-2xl xxxs:text-lg font-bold m-0`}
                 >
-                  {dataBNB
-                    ? dataBNB.formatted.slice(
-                        0,
-                        dataBNB.formatted.indexOf(".") + 9
-                      )
-                    : 0}
+                  {dataBNB ? getFixedAmount(dataBNB.formatted) : 0}
                 </h2>
                 <p
                   className={`${
@@ -94,12 +89,16 @@ const PaymentMethod = ({
                   } m-0 text-xs`}
                 >
                   $
-                  {FixedNumber.from(
-                    parseBalance((bnbPrice as BigNumber) ?? "0", 18, 8)
-                  )
-                    .mulUnsafe(FixedNumber.from(dataBNB?.formatted ?? "0"))
-                    .round(3)
-                    ._value.slice(0, -1)}
+                  {dataBNB?.value
+                    ? getFixedAmount(
+                        utils.formatEther(
+                          (bnbPrice as BigNumber)
+                            .mul(dataBNB?.value)
+                            .div(utils.parseEther("1"))
+                        ),
+                        2
+                      )
+                    : "0.00"}
                 </p>
               </div>
             </div>
@@ -141,11 +140,8 @@ const PaymentMethod = ({
                     selectedOption === "BUSD" && "text-white"
                   } md:text-2xl xs:text-lg xxs:text-lg xxxs:text-lg font-bold m-0`}
                 >
-                  {dataBUSD
-                    ? dataBUSD.formatted.slice(
-                        0,
-                        dataBUSD.formatted.indexOf(".") + 9
-                      )
+                  {dataBUSD?.formatted
+                    ? getFixedAmount(dataBUSD.formatted, 2)
                     : 0}
                 </h2>
                 <p
@@ -153,7 +149,10 @@ const PaymentMethod = ({
                     selectedOption === "BUSD" ? "text-white" : "text-gray-1"
                   } m-0 text-xs`}
                 >
-                  ${dataBUSD?.formatted ?? "0"}
+                  $
+                  {dataBUSD?.formatted
+                    ? getFixedAmount(dataBUSD.formatted, 2)
+                    : "0.00"}
                 </p>
               </div>
             </div>
