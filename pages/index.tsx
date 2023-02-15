@@ -15,7 +15,7 @@ import useLimitPerAccount from "../hooks/useLimitPerAccount";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import PaymentMethod from "../components/PaymentMethod";
-import { parseBalance } from "../util";
+import { parseBalance } from "../utils/util";
 import { PaymentType, Address } from "../utils/types";
 
 const BUSD_ADDRESS = process.env.NEXT_PUBLIC_BUSD_ADDRESS as Address;
@@ -183,6 +183,7 @@ function Home() {
       minValue = minValue.concat("0");
 
     setUSDAmount(minValue);
+    setError("");
   };
 
   const handleHalf = () => {
@@ -200,6 +201,7 @@ function Home() {
       halfValue = halfValue.concat("0");
 
     setUSDAmount(halfValue);
+    setError("");
   };
 
   const handleMax = () => {
@@ -214,6 +216,7 @@ function Home() {
       maxValue = maxValue.concat("0");
 
     setUSDAmount(maxValue);
+    setError("");
   };
 
   const handleBuy = () => {
@@ -330,7 +333,6 @@ function Home() {
               bnbAmount={bnbAmount}
               bnbPrice={bnbPrice as BigNumber}
               usdAmount={usdAmount}
-              kelpAmount={kelpAmount}
               kelpPrice={kelpPrice}
               onSettle={handleTx}
               paymentType={paymentType}
