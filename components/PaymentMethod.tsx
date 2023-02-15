@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { useAccount, useBalance } from "wagmi";
-import { parseBalance } from "../util";
+import { parseBalance } from "../utils/util";
 import useBNBPrice from "../hooks/useBNBPrice";
 import { BigNumber, FixedNumber, utils } from "ethers";
 import { PaymentType, Address } from "../utils/types";

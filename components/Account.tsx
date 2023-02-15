@@ -4,7 +4,7 @@ import { useAccount, useEnsName } from "wagmi";
 import { disconnect } from "@wagmi/core";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "./Button";
-import { shortenHex } from "../util";
+import { shortenHex } from "../utils/util";
 
 type DropDownToggleProps = {
   className?: string;

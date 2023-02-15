@@ -15,7 +15,7 @@ import useLimitPerAccount from "../hooks/useLimitPerAccount";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import PaymentMethod from "../components/PaymentMethod";
-import { parseBalance } from "../util";
+import { parseBalance } from "../utils/util";
 import { PaymentType, Address } from "../utils/types";
 
 const BUSD_ADDRESS = process.env.NEXT_PUBLIC_BUSD_ADDRESS as Address;

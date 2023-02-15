@@ -1,13 +1,17 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import Image from "next/image";
 import { useAccount } from "wagmi";
+import { BigNumber, utils } from "ethers";
 import { Modal } from "react-bootstrap";
 import Button from "./Button";
 import useBuyKelpBNB from "../hooks/useBuyKelpBNB";
 import useBuyKelpBUSD from "../hooks/useBuyKelpBUSD";
 import useApproveBUSD from "../hooks/useApproveBUSD";
-import { BigNumber } from "ethers";
-import { parseBalance } from "../util";
+import {
+  parseBalance,
+  buyKelpTokenGasFee,
+  getFixedAmount,
+} from "../utils/util";
 import { PaymentType } from "../utils/types";
 
 interface Props {
@@ -34,6 +38,28 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
   onSettle,
 }) => {
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
+  const [gasFee, setGasFee] = useState<string>("");
+
+  const subBNBAmount = gasFee
+    ? utils.formatEther(
+        utils.parseEther(bnbAmount).sub(utils.parseEther(gasFee))
+      )
+    : "";
+  const transactionFee = gasFee
+    ? utils.formatEther(
+        utils
+          .parseEther(gasFee)
+          .mul(bnbPrice)
+          .div(BigNumber.from("100000000000000000"))
+      )
+    : "";
+  const subUSDAmount = transactionFee
+    ? Number(usdAmount) - Number(transactionFee)
+    : 0;
+  const outKelpAmount = subUSDAmount
+    ? (subUSDAmount / parseFloat(kelpPrice)).toFixed(6)
+    : "";
+
   const {
     data: dataBNB,
     isLoading: isLoadingBNB,
@@ -41,7 +67,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
     error: errorBNB,
     writeAsync: writeAsyncBNB,
     isIdle: isIdleBNB,
-  } = useBuyKelpBNB(address ?? "", bnbAmount);
+  } = useBuyKelpBNB(address ?? "", subBNBAmount ? subBNBAmount : "-1");
   const {
     data: dataBUSD,
     isLoading: isLoadingBUSD,
@@ -178,6 +204,20 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
     hasApproved,
   ]);
 
+  useEffect(() => {
+    const estimateFee = async () => {
+      const { networkFee } = await buyKelpTokenGasFee(
+        parseBalance(bnbPrice),
+        bnbAmount,
+        address
+      );
+
+      setGasFee("" + networkFee);
+    };
+
+    estimateFee();
+  }, [bnbPrice, address, bnbAmount, paymentType]);
+
   return (
     <>
       <Modal
@@ -215,19 +255,33 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
               />
               <time dateTime="10:03"></time>
 
-              <span
-                className="pl-7 pb-10 text-xs leading-6 font-medium"
-                style={{ color: "#CDCECE" }}
-              >
-                <p
-                  className="mb-0 lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
-                  style={{ color: "#2C2D2F" }}
+              {paymentType === "BNB" ? (
+                <span
+                  className="pl-7 pb-10 text-xs leading-6 font-medium"
+                  style={{ color: "#CDCECE" }}
                 >
-                  ${usdAmount}
-                </p>{" "}
-                {bnbAmount.slice(0, bnbAmount.indexOf(".") + 9)} BNB x $
-                {parseBalance(bnbPrice ?? "0", 18, 2)} / BNB
-              </span>
+                  <p
+                    className="mb-0 lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
+                    style={{ color: "#2C2D2F" }}
+                  >
+                    ${usdAmount} in BNB
+                  </p>{" "}
+                  {getFixedAmount(bnbAmount)} BNB x $
+                  {parseBalance(bnbPrice ?? "0", 18, 2)} / BNB
+                </span>
+              ) : (
+                <span
+                  className="pl-7 pb-10 text-xs leading-6 font-medium"
+                  style={{ color: "#CDCECE" }}
+                >
+                  <p
+                    className="mb-0 lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
+                    style={{ color: "#2C2D2F" }}
+                  >
+                    ${usdAmount} in BUSD
+                  </p>
+                </span>
+              )}
             </li>
 
             <li>
@@ -240,19 +294,33 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
               />
               <time dateTime="10:03"></time>
 
-              <span
-                className="pl-7 pb-10 text-xs leading-6 font-medium"
-                style={{ color: "#CDCECE" }}
-              >
-                <p
-                  className="text-xs leading-6 mt font-medium mb-0"
-                  style={{ color: "#2C2D2F" }}
+              {transactionFee ? (
+                <span
+                  className="pl-7 pb-10 text-xs leading-6 font-medium"
+                  style={{ color: "#CDCECE" }}
                 >
-                  $1.34 USD Transaction fee
-                </p>{" "}
-                0.002342342 BNB Transaction fee x $
-                {parseBalance(bnbPrice ?? "0", 18, 2)} / BNB
-              </span>
+                  <p
+                    className="text-xs leading-6 mt font-medium mb-0"
+                    style={{ color: "#2C2D2F" }}
+                  >
+                    Transaction fee: ${getFixedAmount(transactionFee)}
+                  </p>
+                  {getFixedAmount(gasFee)} BNB Transaction fee x $
+                  {parseBalance(bnbPrice ?? "0", 18, 2)} / BNB
+                </span>
+              ) : (
+                <span
+                  className="pl-7 pb-10 text-xs leading-6 font-medium"
+                  style={{ color: "#CDCECE" }}
+                >
+                  <p
+                    className="text-xs leading-6 mt font-medium mb-0"
+                    style={{ color: "#2C2D2F" }}
+                  >
+                    Transaction fee: Loading ...
+                  </p>
+                </span>
+              )}
             </li>
             <li>
               <Image
@@ -263,12 +331,21 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                 height={20}
               />
               <time dateTime="10:03"></time>
-              <span
-                className="pl-7 pb-10 text-xs leading-6 font-medium mt"
-                style={{ color: "#2C2D2F" }}
-              >
-                $4.66 USD Subtotal
-              </span>
+              {subUSDAmount ? (
+                <span
+                  className="pl-7 pb-10 text-xs leading-6 font-medium mt"
+                  style={{ color: "#2C2D2F" }}
+                >
+                  USD Subtotal: $ {getFixedAmount(subUSDAmount)}
+                </span>
+              ) : (
+                <span
+                  className="pl-7 pb-10 text-xs leading-6 font-medium mt"
+                  style={{ color: "#2C2D2F" }}
+                >
+                  USD Subtotal: Loading ...
+                </span>
+              )}
             </li>
             <li>
               <Image
@@ -300,15 +377,21 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
                 style={{ color: "#B0B0B0" }}
               >
                 You Receive{" "}
-                <p
-                  className="lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
-                  style={{ color: "#2C2D2F" }}
-                >
-                  {kelpAmount
-                    .toString()
-                    .slice(0, kelpAmount.toString().indexOf(".") + 7)}{" "}
-                  Kelp
-                </p>
+                {outKelpAmount ? (
+                  <p
+                    className="lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
+                    style={{ color: "#2C2D2F" }}
+                  >
+                    {outKelpAmount} Kelp
+                  </p>
+                ) : (
+                  <p
+                    className="lg:text-3xl md:text-3xl xs:text-2xl xxs:text-1xl xxxs:text-1xl leading-10 font-bold"
+                    style={{ color: "#2C2D2F" }}
+                  >
+                    Loading ...
+                  </p>
+                )}
               </p>
             </li>
           </ul>
