@@ -48,7 +48,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
         utils
           .parseEther(gasFee)
           .mul(bnbPrice)
-          .div(BigNumber.from("100000000000000000"))
+          .div(BigNumber.from("1000000000000000000"))
       )
     : "";
   const subUSDAmount = transactionFee
@@ -94,11 +94,12 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
   const handlePurchase = () => {
     if (paymentType === "BNB") {
       if (writeAsyncBNB) {
-        writeAsyncBNB();
+        console.log("bnb amount", subBNBAmount, bnbAmount, gasFee);
+        // writeAsyncBNB();
       }
     } else {
       if (writeAsyncBUSD) {
-        writeAsyncBUSD();
+        // writeAsyncBUSD();
       }
     }
   };
