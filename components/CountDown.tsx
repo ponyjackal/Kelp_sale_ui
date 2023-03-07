@@ -30,33 +30,19 @@ const CountDownRenderer: FunctionComponent<CountDownRendererProps> = ({
         <div className="flex justify-between md:mt-6 lg:mt-6">
           <div className="text-center">
             <p className="countdown-value-text">{days}</p>
-            <p className="text-gray-1 countdown-time-metric">
-              DAYS
-            </p>
+            <p className="text-gray-1 countdown-time-metric">DAYS</p>
           </div>
           <div className="text-center">
-            <p className="countdown-value-text">
-              {hours}
-            </p>
-            <p className="text-gray-1 countdown-time-metric">
-              HOURS
-            </p>
+            <p className="countdown-value-text">{hours}</p>
+            <p className="text-gray-1 countdown-time-metric">HOURS</p>
           </div>
           <div className="text-center">
-            <p className="countdown-value-text">
-              {minutes}
-            </p>
-            <p className="text-gray-1 countdown-time-metric">
-              MINUTES
-            </p>
+            <p className="countdown-value-text">{minutes}</p>
+            <p className="text-gray-1 countdown-time-metric">MINUTES</p>
           </div>
           <div className="text-center">
-            <p className="countdown-value-text">
-              {seconds}
-            </p>
-            <p className="text-gray-1 countdown-time-metric">
-              SECONDS
-            </p>
+            <p className="countdown-value-text">{seconds}</p>
+            <p className="text-gray-1 countdown-time-metric">SECONDS</p>
           </div>
         </div>
       </div>

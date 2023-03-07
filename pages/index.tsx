@@ -11,12 +11,14 @@ import Input from "../components/Input";
 import ConfirmPurchase from "../components/ConfirmPurchase";
 import useBNBPrice from "../hooks/useBNBPrice";
 import useKelpPrice from "../hooks/useKelpPrice";
+import useSales from "../hooks/useSales";
 import useLimitPerAccount from "../hooks/useLimitPerAccount";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import PaymentMethod from "../components/PaymentMethod";
 import { getFixedAmount } from "../utils/util";
 import { PaymentType, Address } from "../utils/types";
+import { SALE_TYPE } from "../utils/constants";
 
 const BUSD_ADDRESS = process.env.NEXT_PUBLIC_BUSD_ADDRESS as Address;
 
@@ -24,6 +26,7 @@ function Home() {
   const { address, isConnected } = useAccount();
   const { kelpPrice } = useKelpPrice();
   const { limitPerAccount } = useLimitPerAccount();
+  const { data: saleInfo } = useSales(SALE_TYPE);
 
   const [paymentType, setPaymentType] = useState<PaymentType>("BNB");
 
@@ -58,6 +61,10 @@ function Home() {
     : "0.0";
 
   const kelpAmount = parseFloat(usdAmount) / parseFloat(kelpPrice);
+
+  const startDateTime = new Date(
+    saleInfo?.startTime ? saleInfo?.startTime.toNumber() * 1000 : 0
+  ).toISOString();
 
   const bnbAmount = useMemo(() => {
     if (!bnbPrice || kelpAmount <= 0.0 || Number.isNaN(kelpAmount)) {
@@ -249,7 +256,7 @@ function Home() {
             </h1>
           </section>
 
-          <Countdown date={"2023-03-01T14:48:00.000+09:00"} />
+          <Countdown date={startDateTime} />
 
           <TotalRaised />
 
