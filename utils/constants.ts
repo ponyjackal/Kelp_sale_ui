@@ -10,5 +10,7 @@ export const KELP_DECIMAL_FACTOR: BigNumber = BigNumber.from(10).pow(6);
 export const KELP_TOKEN_NAME = "Kelp Finance";
 export const KELP_TOKEN_SYMBOL = "ttKELP";
 export const KELP_TOKEN_DECIMAL = 6;
+export const KELP_TOKEN_IMAGE =
+  "http://kelp.finance/wp-content/uploads/2023/03/kelp_token_symbol_32.png";
 
 export const BSC_MAINNET_RPC_URL = "https://bsc-dataseed1.defibit.io/";

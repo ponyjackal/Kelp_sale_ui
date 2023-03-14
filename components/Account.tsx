@@ -9,6 +9,7 @@ import {
   KELP_TOKEN_ADDRESS,
   KELP_TOKEN_SYMBOL,
   KELP_TOKEN_DECIMAL,
+  KELP_TOKEN_IMAGE,
 } from "../utils/constants";
 
 type DropDownToggleProps = {
@@ -47,7 +48,7 @@ export default function HomePage({ className }: DropDownToggleProps) {
           address: KELP_TOKEN_ADDRESS,
           symbol: KELP_TOKEN_SYMBOL,
           decimals: KELP_TOKEN_DECIMAL,
-          image: "https://example.com/token-image.png", // Replace with the token image URL
+          image: KELP_TOKEN_IMAGE,
         },
       },
     });
