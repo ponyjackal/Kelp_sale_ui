@@ -9,6 +9,7 @@ import { KELP_TOKEN_ADDRESS } from "../utils/constants";
 
 const Header = () => {
   const { address, isConnected } = useAccount();
+
   return (
     <header className="px-8 py-4 bg-gray-2">
       <nav className="flex justify-between items-center">

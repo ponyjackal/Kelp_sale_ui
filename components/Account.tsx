@@ -5,6 +5,11 @@ import { disconnect } from "@wagmi/core";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "./Button";
 import { shortenHex } from "../utils/util";
+import {
+  KELP_TOKEN_ADDRESS,
+  KELP_TOKEN_SYMBOL,
+  KELP_TOKEN_DECIMAL,
+} from "../utils/constants";
 
 type DropDownToggleProps = {
   className?: string;
@@ -29,6 +34,25 @@ export default function HomePage({ className }: DropDownToggleProps) {
     setLoading(false);
   };
 
+  const addKelpToWallet = async () => {
+    if (!window.ethereum) {
+      return;
+    }
+
+    await window.ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20",
+        options: {
+          address: KELP_TOKEN_ADDRESS,
+          symbol: KELP_TOKEN_SYMBOL,
+          decimals: KELP_TOKEN_DECIMAL,
+          image: "https://example.com/token-image.png", // Replace with the token image URL
+        },
+      },
+    });
+  };
+
   return (
     <>
       {isConnected && address ? (
@@ -41,6 +65,9 @@ export default function HomePage({ className }: DropDownToggleProps) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
+            <Dropdown.Item onClick={addKelpToWallet}>
+              Import Kelp to wallet
+            </Dropdown.Item>
             <Dropdown.Item onClick={onClose}>
               {loading ? "Disconnecting" : "Disconnect"}
             </Dropdown.Item>

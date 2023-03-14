@@ -4,7 +4,7 @@ import { utils, BigNumber } from "ethers";
 import useTotalRaised from "../hooks/useTotalRaised";
 import useSales from "../hooks/useSales";
 import useKelpPrice from "../hooks/useKelpPrice";
-import { SALE_TYPE, KELP_DECIMAL } from "../utils/constants";
+import { SALE_TYPE, KELP_DECIMAL_FACTOR } from "../utils/constants";
 
 const TotalRaised = () => {
   const { data: totalRaisedRaw } = useTotalRaised(SALE_TYPE);
@@ -19,13 +19,11 @@ const TotalRaised = () => {
     const totalRaisedBN = totalRaisedRaw as BigNumber;
 
     const totalRaisedStr = utils.formatEther(
-      totalRaisedBN.mul(utils.parseEther(kelpPrice)).div(KELP_DECIMAL)
+      totalRaisedBN.mul(utils.parseEther(kelpPrice)).div(KELP_DECIMAL_FACTOR)
     );
 
     return totalRaisedStr.slice(0, totalRaisedStr.indexOf(".") + 6);
   }, [totalRaisedRaw, kelpPrice]);
-
-  console.log("total raised", totalRaised);
 
   const totalLimit = useMemo(() => {
     if (!saleInfo) {
@@ -34,7 +32,7 @@ const TotalRaised = () => {
 
     const totalLimitRaw = saleInfo.totalLimit;
     const totalLimitStr = utils.formatEther(
-      totalLimitRaw.mul(utils.parseEther(kelpPrice)).div(KELP_DECIMAL)
+      totalLimitRaw.mul(utils.parseEther(kelpPrice)).div(KELP_DECIMAL_FACTOR)
     );
 
     return totalLimitStr.slice(0, totalLimitStr.indexOf(".") + 6);

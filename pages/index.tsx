@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import Head from "next/head";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useSwitchNetwork } from "wagmi";
 import { BigNumber, utils } from "ethers";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../components/Header";
@@ -24,6 +24,12 @@ const BUSD_ADDRESS = process.env.NEXT_PUBLIC_BUSD_ADDRESS as Address;
 
 function Home() {
   const { address, isConnected } = useAccount();
+  const { chains, isLoading, pendingChainId, switchNetwork } = useSwitchNetwork(
+    {
+      chainId: 56,
+    }
+  );
+
   const { kelpPrice } = useKelpPrice();
   const { limitPerAccount } = useLimitPerAccount();
   const { data: saleInfo } = useSales(SALE_TYPE);
@@ -174,6 +180,12 @@ function Home() {
     let inputElement = document.getElementById("input-amount-value");
     if (inputElement) simulateMouseClick(inputElement);
   }, [usdAmount]);
+
+  useEffect(() => {
+    if (switchNetwork) {
+      switchNetwork();
+    }
+  }, [switchNetwork]);
 
   const getPartialAmount = (percentage: string) => {
     let value = "0.00";
