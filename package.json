@@ -27,6 +27,7 @@
     "react-countdown": "^2.3.5",
     "react-dom": "^18.2.0",
     "react-toastify": "^9.1.1",
+    "sharp": "^0.32.0",
     "swr": "^1.2.0",
     "wagmi": "^0.10.6"
   },
