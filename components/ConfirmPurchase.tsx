@@ -207,7 +207,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
     const estimateFee = async () => {
       const { networkFee } = await buyKelpTokenGasFee(
         parseBalance(bnbPrice),
-        bnbAmount,
+        utils.formatUnits(utils.parseUnits("0.000001", 6), 6),
         address
       );
 
@@ -215,7 +215,7 @@ const ConfirmPurchase: FunctionComponent<Props> = ({
     };
 
     estimateFee();
-  }, [bnbPrice, address, bnbAmount, paymentType]);
+  }, [bnbPrice, address, paymentType]);
 
   return (
     <>
